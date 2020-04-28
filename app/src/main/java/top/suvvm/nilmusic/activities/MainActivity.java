@@ -1,10 +1,10 @@
-package top.suvvm.nilmusic;
+package top.suvvm.nilmusic.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
+import top.suvvm.nilmusic.R;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
