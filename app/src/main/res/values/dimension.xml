@@ -3,4 +3,6 @@
     <dimen name="navigationBarHeight">56dp</dimen>
     <dimen name="navigationBarTitleSize">22sp</dimen>
     <dimen name="marginSize">16dp</dimen>
+    <dimen name="titleSize">18sp</dimen>
+    <dimen name="inputViewHeight">44dp</dimen>
 </resources>

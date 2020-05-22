@@ -4,12 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.LoginActivity">
 
     <include layout="@layout/navigation_bar"/>
-
-    <TextView
+    <!--logo-->
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LoginActivity"/>
+        android:src="@mipmap/nil_logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginSize" />
+    <!--logo-->
+    <top.suvvm.nilmusic.views.InputView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/inputViewHeight"
+        android:layout_marginTop="@dimen/marginSize"
+        app:input_icon="@mipmap/phone"
+        app:input_hint="手机号"
+        app:is_psw="false"
+        />
+    <view style="@style/line"/>
 </LinearLayout>

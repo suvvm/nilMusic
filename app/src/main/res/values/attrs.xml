@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--声明输入框样式-->
+    <declare-styleable name="inputView">
+        <!--图标 接收路径-->
+        <attr name="input_icon" format="reference"/>
+        <!--提示词 接收字符串-->
+        <attr name="input_hint" format="string"/>
+        <!--是否为密文 接收布尔值-->
+        <attr name="is_psw" format="boolean"/>
+    </declare-styleable>
+</resources>

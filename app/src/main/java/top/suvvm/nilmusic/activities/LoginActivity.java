@@ -16,5 +16,12 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        initView();
+    }
+
+    // 初始化View
+    private void initView () {
+        // 初始化导航栏
+        initNavigationBar(false, "登录", false);
     }
 }
