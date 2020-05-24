@@ -4,5 +4,8 @@
     <dimen name="navigationBarTitleSize">22sp</dimen>
     <dimen name="marginSize">16dp</dimen>
     <dimen name="titleSize">18sp</dimen>
+    <dimen name="infoSize">14sp</dimen>
+    <dimen name="buttonHeight">44dp</dimen>
+    <dimen name="radius">5dp</dimen>
     <dimen name="inputViewHeight">44dp</dimen>
 </resources>
