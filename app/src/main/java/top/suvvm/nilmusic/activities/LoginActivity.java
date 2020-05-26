@@ -46,8 +46,8 @@ public class LoginActivity extends BaseActivity {
         String pnum = inputPhone.getInputVal();
         String psw = inputPassword.getInputVal();
         // 验证用户输入内容是否合法
-        if (!UserUtils.judgeLoginDate(this, pnum, psw))
-            return;
+//        if (!UserUtils.judgeLoginDate(this, pnum, psw))
+//            return;
         // 跳转至MainActivity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

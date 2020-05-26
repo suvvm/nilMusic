@@ -1,10 +1,13 @@
 package top.suvvm.nilmusic.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.RegexUtils;
+
+import top.suvvm.nilmusic.activities.LoginActivity;
 
 /**
  * @ClassName: UserUtils
@@ -26,5 +29,11 @@ public class UserUtils {
             return false;
         }
         return true;
+    }
+
+    // 退出登录
+    public static void logout(Context context) {
+        context.startActivity(new Intent(context, LoginActivity.class));
+
     }
 }

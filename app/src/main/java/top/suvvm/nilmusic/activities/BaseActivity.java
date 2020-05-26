@@ -1,6 +1,7 @@
 package top.suvvm.nilmusic.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,16 +17,23 @@ public class BaseActivity extends Activity {
         ivBack = findViewById(R.id.iv_back);
         ivMe = findViewById(R.id.iv_me);
         tvTitle = findViewById(R.id.tv_title);
-        // 设置可见性
+        // 设置导航栏可见性
         ivBack.setVisibility(isShowBack ? View.VISIBLE : View.GONE);
         ivMe.setVisibility(isShowMe ? View.VISIBLE : View.GONE);
-        // 设置title文字
+        // 设置导航栏title文字
         tvTitle.setText(title);
-        // 设置返回点击事件
+        // 设置导航栏返回点击事件
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        // 设置导航栏个人主页点击事件
+        ivMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BaseActivity.this, MeActivity.class));
             }
         });
     }
