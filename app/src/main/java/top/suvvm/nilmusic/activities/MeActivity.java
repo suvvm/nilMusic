@@ -3,6 +3,7 @@ package top.suvvm.nilmusic.activities;
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.utils.UserUtils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,7 +25,7 @@ public class MeActivity extends BaseActivity {
 
     // 修改密码
     public void onChangeClick(View view) {
-
+        startActivity(new Intent(this, ChangePasswordActivity.class));
     }
 
     // 退出登录
