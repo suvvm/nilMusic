@@ -9,4 +9,10 @@
     <dimen name="radius">5dp</dimen>
     <dimen name="inputViewHeight">44dp</dimen>
     <dimen name="itemHeight">44dp</dimen>
+    <dimen name="marginTabSize">4dp</dimen>
+    <dimen name="albumMarginSize">4dp</dimen>
+    <dimen name="playNumImageSize">18dp</dimen>
+    <dimen name="itemIconSize">56dp</dimen>
+    <dimen name="itemPlaySize">36dp</dimen>
+
 </resources>

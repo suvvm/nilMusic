@@ -7,4 +7,6 @@
     <color name="mainColorHighlight">#C80F1F</color>
     <color name="lineColor">#C3C3C3</color>
     <color name="itemColorHighlight">#DEE1E6</color>
+    <color name="titleColor">#333333</color>
+    <color name="infoColor">#888888</color>
 </resources>
