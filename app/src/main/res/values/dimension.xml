@@ -14,5 +14,6 @@
     <dimen name="playNumImageSize">18dp</dimen>
     <dimen name="itemIconSize">56dp</dimen>
     <dimen name="itemPlaySize">36dp</dimen>
+    <dimen name="musicInfoMarginSize">480dp</dimen>
 
 </resources>

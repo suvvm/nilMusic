@@ -1,6 +1,7 @@
 package top.suvvm.nilmusic.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import top.suvvm.nilmusic.R;
+import top.suvvm.nilmusic.activities.PlayMusicActivity;
 
 /**
  * @ClassName: MusicListAdapter
@@ -45,7 +47,14 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         // 使用Clide将目标url图片资源显示在目标item的imageView上
         Glide.with(context).load("http://res.lgdsunday.club/poster-1.png")
                 .into(holder.ivIcon);
-
+        // 为每个音乐元素注册点击事件
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PlayMusicActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -73,12 +82,14 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivIcon;
+        View itemView;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // 获取item的imageView
             ivIcon = itemView.findViewById(R.id.iv_icon);
+            this.itemView = itemView;
         }
     }
 }
