@@ -2,6 +2,7 @@ package top.suvvm.nilmusic.activities;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import top.suvvm.nilmusic.R;
+import top.suvvm.nilmusic.views.PlayMusicView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 public class PlayMusicActivity extends BaseActivity {
 
     private ImageView bgImageView;
+    private PlayMusicView playMusicView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,9 @@ public class PlayMusicActivity extends BaseActivity {
         Glide.with(this).load("http://res.lgdsunday.club/poster-1.png")
                 .apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 10)))
                 .into(bgImageView);
+        // 初始化音乐播放
+        playMusicView = findViewById(R.id.play_music_view);
+        playMusicView.setMusicIcon("http://res.lgdsunday.club/poster-1.png");
     }
 
     // 后退按钮点击事件

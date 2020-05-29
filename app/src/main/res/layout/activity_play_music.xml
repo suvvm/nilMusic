@@ -13,6 +13,13 @@
         android:scaleType="centerCrop"
         android:id="@+id/iv_bg"
         android:src="@mipmap/img1"/>
+    <!--音乐播放组件-->
+    <top.suvvm.nilmusic.views.PlayMusicView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/play_music_view"
+        android:layout_gravity="center_horizontal"/>
+
     <!--后退按钮-->
     <ImageView
         android:layout_width="wrap_content"
