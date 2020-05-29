@@ -4,7 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +42,10 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (!isRvHeightSet)
             setRecyclerViewHeight();
+        // 使用Clide将目标url图片资源显示在目标item的imageView上
+        Glide.with(context).load("http://res.lgdsunday.club/poster-1.png")
+                .into(holder.ivIcon);
+
     }
 
     @Override
@@ -65,8 +72,13 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView ivIcon;
+
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            // 获取item的imageView
+            ivIcon = itemView.findViewById(R.id.iv_icon);
         }
     }
 }
