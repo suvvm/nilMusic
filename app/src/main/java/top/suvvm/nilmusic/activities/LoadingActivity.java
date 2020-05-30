@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import top.suvvm.nilmusic.R;
+import top.suvvm.nilmusic.utils.UserUtils;
 
 /**
  * @ClassName: LoadingActivity
@@ -20,10 +21,12 @@ public class LoadingActivity extends BaseActivity {
 
     /**
      * @FunctionName: loading
-     * @Description: 设置timer等待3秒后跳转至LoginActivity
+     * @Description: 设置timer等待3秒后判断用户登录状态，
+     *  决定跳转Activity
      * @Return:
      */
     private void loading () {
+        final boolean isLogin = UserUtils.validateUserLogin(this);
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -31,9 +34,15 @@ public class LoadingActivity extends BaseActivity {
                 // 跳转至mainActivity并结束当前活动
                 // Log.e("LoginActivity", "toMainActivity");
                 // Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
-                Intent intent = new Intent(LoadingActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                if (isLogin) {  // 已存在登录
+                    Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(LoadingActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }, 3000);
     }

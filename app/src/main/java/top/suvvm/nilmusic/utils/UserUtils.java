@@ -16,6 +16,7 @@ import java.util.List;
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.LoginActivity;
 import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.helps.UserHelp;
 import top.suvvm.nilmusic.pojo.UserModel;
 
 /**
@@ -49,11 +50,28 @@ public class UserUtils {
             Toast.makeText(context, "密码错误" , Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        // 保存用户登录标记
+        boolean isSave = SharedPreferencesUtils.saveUser(context, pnum);
+        if (!isSave) {
+            Toast.makeText(context, "登录状态保存错误" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // 利用单例UserHelper保存用户登录信息
+        UserHelp.getInstance().setPhone(pnum);
+
         return true;
     }
 
     // 退出登录
     public static void logout(Context context) {
+        // 删除SharePreferences里保存的用户标记
+        boolean isRemove = SharedPreferencesUtils.removeUser(context);
+        if (!isRemove) {
+            Toast.makeText(context, "用户状态清除错误" , Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(context, LoginActivity.class);
         // 添加intent标志，清空task栈并创建新的task栈，保证栈中只有一个Activity
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -109,5 +127,9 @@ public class UserUtils {
         RealmHelp realmHelp = new RealmHelp();
         realmHelp.saveUser(userModel);
         realmHelp.close();
+    }
+    // 验证是否存在已登录用户
+    public static boolean validateUserLogin(Context context) {
+        return SharedPreferencesUtils.isLoginUser(context);
     }
 }
