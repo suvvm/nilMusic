@@ -6,10 +6,17 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.EncodeUtils;
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
+
+import java.util.List;
 
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.LoginActivity;
+import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.pojo.UserModel;
 
 /**
  * @ClassName: UserUtils
@@ -19,15 +26,27 @@ import top.suvvm.nilmusic.activities.LoginActivity;
  */
 public class UserUtils {
 
-    // 验证登录输入内容合法性
+    // 验证用户
     public static boolean judgeLoginDate(Context context, String pnum, String psw) {
-
         if (!RegexUtils.isMobileExact(pnum)) {
             Toast.makeText(context, "手机号无效" , Toast.LENGTH_SHORT).show();
             return false;
         }
         if (TextUtils.isEmpty(psw)) {
             Toast.makeText(context, "输入密码为空" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 用户手机号是否存在
+        if (!userExistFromPhone(pnum)) {
+            Toast.makeText(context, "输入手机号未注册" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 手机号与密码是否匹配
+        RealmHelp realmHelp = new RealmHelp();
+        boolean res = realmHelp.validateUser(pnum, EncryptUtils.encryptMD5ToString(psw));
+        realmHelp.close();
+        if (!res) {
+            Toast.makeText(context, "密码错误" , Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -42,5 +61,53 @@ public class UserUtils {
         // 设置跳转动画
         ((Activity)context).overridePendingTransition(R.anim.open_enter, R.anim.open_exit);
 
+    }
+
+    // 用户注册
+    public static boolean registerUser (Context context, String phone, String password, String passwordConfirm) {
+        // 判断手机号是否合法
+        if (!RegexUtils.isMobileExact(phone)) {
+            Toast.makeText(context, "手机号无效" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 判断密码是否为空与两次密码是否相同
+        if (StringUtils.isEmpty(password) || !password.equals(passwordConfirm)) {
+            Toast.makeText(context, "密码无效" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 验证当前手机号是否已被注册
+        if (userExistFromPhone(phone)) {
+            Toast.makeText(context, "手机号已存在" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 保存用户信息至realm数据库
+        UserModel userModel = new UserModel();
+        userModel.setPhone(phone);
+        // 加密存储密码
+        userModel.setPassword(EncryptUtils.encryptMD5ToString(password));
+
+        saveUser(userModel);
+        return true;
+    }
+    // 根据手机号判断用户是否存在
+    public static boolean userExistFromPhone(String phone) {
+        boolean res = false;
+        RealmHelp realmHelp = new RealmHelp();
+        // 获取全部用户
+        List<UserModel> userModelList = realmHelp.getAllUser();
+        for (UserModel userModel : userModelList) {
+            if (userModel.getPhone().equals(phone)) {   // 手机号已存在
+                res = true;
+                break;
+            }
+        }
+        realmHelp.close();
+        return res;
+    }
+    // 将目标用户信息保存到realm数据库
+    public static void saveUser (UserModel userModel) {
+        RealmHelp realmHelp = new RealmHelp();
+        realmHelp.saveUser(userModel);
+        realmHelp.close();
     }
 }

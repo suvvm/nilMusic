@@ -45,9 +45,9 @@ public class LoginActivity extends BaseActivity {
     public void onCommitClick(View view) {
         String pnum = inputPhone.getInputVal();
         String psw = inputPassword.getInputVal();
-        // 验证用户输入内容是否合法
-//        if (!UserUtils.judgeLoginDate(this, pnum, psw))
-//            return;
+        // 验证用户
+        if (!UserUtils.judgeLoginDate(this, pnum, psw))
+            return;
         // 跳转至MainActivity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

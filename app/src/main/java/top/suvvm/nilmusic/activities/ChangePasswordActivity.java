@@ -19,4 +19,8 @@ public class ChangePasswordActivity extends BaseActivity {
         // 初始化导航栏
         initNavigationBar(true, "修改密码", false);
     }
+
+    public void onSubmitClick () {
+
+    }
 }

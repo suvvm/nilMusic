@@ -1,6 +1,7 @@
 package top.suvvm.nilmusic.views;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import top.suvvm.nilmusic.R;
+import top.suvvm.nilmusic.helps.MediaPlayerHelp;
 
 /**
  * @ClassName: PlayMusicView
@@ -31,6 +33,8 @@ public class PlayMusicView extends FrameLayout {
     private Animation playMusicAnim, playNeedleAnim, stopNeedleAnim;
     private FrameLayout playMusicLayout;
     private boolean isPlaying;
+    private MediaPlayerHelp mediaPlayerHelp;
+    private String path;
 
     public PlayMusicView(@NonNull Context context) {
         super(context);
@@ -57,7 +61,7 @@ public class PlayMusicView extends FrameLayout {
 
     // 初始化音乐播放组件
     private void init(Context context) {
-        
+        // MediaPlayer
         this.context = context;
         // 获取各个组件
         view = LayoutInflater.from(context).inflate(R.layout.play_music, this, false);
@@ -77,6 +81,8 @@ public class PlayMusicView extends FrameLayout {
             }
         });
         addView(view);
+        // 获取MediaPlayerHelp实例
+        mediaPlayerHelp = MediaPlayerHelp.getInstance(context);
     }
 
     // 切换播放状态
@@ -84,12 +90,14 @@ public class PlayMusicView extends FrameLayout {
         if (isPlaying) {
             stopMusic();
         } else {
-            playMusic();;
+            playMusic(path);;
         }
     }
 
     // 播放音乐
-    public void playMusic() {
+    public void playMusic(String path) {
+        // 记录当前音乐路径
+        this.path = path;
         // 使用startAnimation 执行动画
         // 执行碟片旋转
         playMusicLayout.startAnimation(playMusicAnim);
@@ -99,6 +107,24 @@ public class PlayMusicView extends FrameLayout {
         ivPlay.setVisibility(View.GONE);
         // 改变播放状态
         isPlaying = true;
+        // 判断当前音乐是否已经播放
+        if (path.equals(mediaPlayerHelp.getPath())) {
+            // 如果当前音乐已经在播放，直接执行start继续播放当前音乐
+            mediaPlayerHelp.start();
+        } else {
+            // 如果当前播放的音乐并未播放，调用setPath设置mediaPlay状态
+            mediaPlayerHelp.setPath(path);
+            // 监听，准备完成后调用start方法
+            mediaPlayerHelp.setOnMeidaPlayerHelperListener(new MediaPlayerHelp.OnMeidaPlayerHelperListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mediaPlayerHelp.start();
+                }
+            });
+        }
+
+
+
     }
 
     // 停止播放
@@ -111,6 +137,8 @@ public class PlayMusicView extends FrameLayout {
         ivPlay.setVisibility(View.VISIBLE);
         // 改变播放状态
         isPlaying = false;
+        // 暂停播放
+        mediaPlayerHelp.pause();
     }
 
     // 设置光盘中央音乐封面图片

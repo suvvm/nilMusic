@@ -39,7 +39,7 @@ public class PlayMusicActivity extends BaseActivity {
         // 初始化音乐播放
         playMusicView = findViewById(R.id.play_music_view);
         playMusicView.setMusicIcon("http://res.lgdsunday.club/poster-1.png");
-        playMusicView.playMusic();
+        playMusicView.playMusic("http://res.lgdsunday.club/Nostalgic%20Piano.mp3");
     }
 
     // 后退按钮点击事件
