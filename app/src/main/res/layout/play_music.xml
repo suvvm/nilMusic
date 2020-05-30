@@ -6,6 +6,7 @@
 
     <!--碟片-->
     <FrameLayout
+        android:id="@+id/fl_play_music"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/discTopSize">
@@ -24,6 +25,7 @@
             app:civ_border_color="@android:color/black"/>
         <!--播放按钮 默认隐藏-->
         <ImageView
+            android:id="@+id/iv_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/play"
@@ -32,6 +34,7 @@
     </FrameLayout>
     <!--指针-->
     <ImageView
+        android:id="@+id/iv_needle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/needle"

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="anim_duration">500</integer>
+    <!--光盘旋转一圈所需时间-->
+    <integer name="play_music_anim_duration">10000</integer>
+    <!--指针旋转所需时间-->
+    <integer name="play_needle_anim_duration">6000</integer>
 </resources>
