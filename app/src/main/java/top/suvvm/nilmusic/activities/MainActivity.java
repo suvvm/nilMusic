@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.adapters.MusicGridAdapter;
 import top.suvvm.nilmusic.adapters.MusicListAdapter;
+import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.pojo.MusicSourceModel;
 import top.suvvm.nilmusic.views.GridSpaceItemDecoration;
 
 import android.os.Bundle;
@@ -16,15 +18,18 @@ public class MainActivity extends BaseActivity {
     private RecyclerView recyclerViewGrid, recyclerViewList;
     private MusicGridAdapter musicGridAdapter;
     private MusicListAdapter musicListAdapter;
+    private RealmHelp realmHelp;
+    private MusicSourceModel musicSourceModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initData();
         initView();
     }
     // 初始化View
-    private void initView () {
+    private void initView() {
         // 初始化导航栏
         initNavigationBar(false, "nilMusic", true);
         // 获取recyclerViewGrid 初始化歌单网格
@@ -33,14 +38,29 @@ public class MainActivity extends BaseActivity {
         recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerViewGrid.addItemDecoration(new GridSpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.albumMarginSize), recyclerViewGrid));
         recyclerViewGrid.setNestedScrollingEnabled(false);  // 禁止滚动
-        musicGridAdapter = new MusicGridAdapter(this);
+        musicGridAdapter = new MusicGridAdapter(this, musicSourceModel.getAlbum());
         recyclerViewGrid.setAdapter(musicGridAdapter);
         // 获取recyclerViewGrid 初始化歌曲列表
         recyclerViewList = findViewById(R.id.rv_list);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));    // 分割线
         recyclerViewList.setNestedScrollingEnabled(false);  // 禁止滚动
-        musicListAdapter = new MusicListAdapter(this, recyclerViewList);
+        musicListAdapter = new MusicListAdapter(this, recyclerViewList, musicSourceModel.getHot());
         recyclerViewList.setAdapter(musicListAdapter);
+
+    }
+    // 初始化音乐源数据
+    private void initData() {
+        realmHelp = new RealmHelp();
+        musicSourceModel = realmHelp.getMusicSource();
+        // 不能直接关闭realm
+        // realmHelp.close();
+    }
+
+    // 销毁时关闭realm
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realmHelp.close();
     }
 }

@@ -1,13 +1,22 @@
 package top.suvvm.nilmusic.helps;
 
+import android.content.Context;
+
 import com.blankj.utilcode.util.StringUtils;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import top.suvvm.nilmusic.migration.Migration;
+import top.suvvm.nilmusic.pojo.AlbumModel;
+import top.suvvm.nilmusic.pojo.MusicModel;
+import top.suvvm.nilmusic.pojo.MusicSourceModel;
 import top.suvvm.nilmusic.pojo.UserModel;
+import top.suvvm.nilmusic.utils.DataUtils;
 
 /**
  * @ClassName: RealmHelp
@@ -84,4 +93,63 @@ public class RealmHelp {
         user.setPassword(userModel.getPassword());
         realm.commitTransaction();
     }
+    // 用户登录存放数据
+    // 用户退出删除数据
+
+    // 保存音乐源数据
+    public void setMusicSource(Context context) {
+        // 获取json数据
+        String musicJson = DataUtils.getJsonFromAssets(context, "DataSource.json");
+        realm.beginTransaction();
+        realm.createObjectFromJson(MusicSourceModel.class, musicJson);
+        realm.commitTransaction();
+    }
+
+    // 删除音乐源数据
+    public void removeMusicSource(Context context) {
+        realm.beginTransaction();
+        realm.delete(MusicSourceModel.class);
+        realm.delete(MusicModel.class);
+        realm.delete(AlbumModel.class);
+        realm.commitTransaction();
+    }
+
+    // realm数据库发生结构性变化，进行数据迁移
+
+
+    // 创建RealmConfiguration
+    private static RealmConfiguration getRealmConfiguration () {
+        return new RealmConfiguration.Builder()
+                .schemaVersion(1)
+                .migration(new Migration())
+                .build();
+    }
+    // 通知realm进行数据迁移，为realm设置最新配置
+    public static void migration() {
+        // 创建RealmConfiguration
+        RealmConfiguration configuration = getRealmConfiguration();
+        // 为realm设置最新配置
+        Realm.setDefaultConfiguration(configuration);
+        // 通知realm进行数据迁移
+        try {
+            Realm.migrateRealm(configuration);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    // 返回音乐源数据
+    public MusicSourceModel getMusicSource() {
+        return realm.where(MusicSourceModel.class).findFirst();
+    }
+
+    // 根据id返回歌单
+    public AlbumModel getAlbum(String albumId) {
+        return realm.where(AlbumModel.class).equalTo("albumId", albumId).findFirst();
+    }
+
+    // 根据id返回音乐
+    public MusicModel getMusic(String musicId) {
+        return realm.where(MusicModel.class).equalTo("musicId", musicId).findFirst();
+    }
+
 }

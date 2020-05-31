@@ -45,7 +45,7 @@ public class UserUtils {
         // 手机号与密码是否匹配
         RealmHelp realmHelp = new RealmHelp();
         boolean res = realmHelp.validateUser(pnum, EncryptUtils.encryptMD5ToString(psw));
-        realmHelp.close();
+
         if (!res) {
             Toast.makeText(context, "密码错误" , Toast.LENGTH_SHORT).show();
             return false;
@@ -61,6 +61,11 @@ public class UserUtils {
         // 利用单例UserHelper保存用户登录信息
         UserHelp.getInstance().setPhone(pnum);
 
+        // 保存音乐源数据
+        realmHelp.setMusicSource(context);
+
+        realmHelp.close();
+
         return true;
     }
 
@@ -72,6 +77,11 @@ public class UserUtils {
             Toast.makeText(context, "用户状态清除错误" , Toast.LENGTH_SHORT).show();
             return;
         }
+        // 删除数据源
+        RealmHelp realmHelp = new RealmHelp();
+        realmHelp.removeMusicSource(context);
+        realmHelp.close();
+
         Intent intent = new Intent(context, LoginActivity.class);
         // 添加intent标志，清空task栈并创建新的task栈，保证栈中只有一个Activity
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

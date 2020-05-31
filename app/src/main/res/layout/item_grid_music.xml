@@ -26,6 +26,7 @@
                 android:layout_height="@dimen/playNumImageSize"
                 android:src="@mipmap/play_num" />
             <TextView
+                android:id="@+id/tv_play_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100.00万"
@@ -38,6 +39,7 @@
     </FrameLayout>
     <!--歌单名称-->
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="歌单名称"

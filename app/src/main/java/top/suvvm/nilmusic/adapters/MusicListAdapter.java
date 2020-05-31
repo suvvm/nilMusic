@@ -7,13 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.PlayMusicActivity;
+import top.suvvm.nilmusic.pojo.MusicModel;
 
 /**
  * @ClassName: MusicListAdapter
@@ -27,10 +31,12 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     private View itemView;
     private RecyclerView recyclerView;
     private boolean isRvHeightSet;     // 表示recyclerView高度是否已经设定完毕
+    private List<MusicModel> dataSource;
 
-    public MusicListAdapter(Context context, RecyclerView recyclerView) {
+    public MusicListAdapter(Context context, RecyclerView recyclerView, List<MusicModel> dataSource) {
         this.context = context;
         this.recyclerView = recyclerView;
+        this.dataSource = dataSource;
     }
 
     @NonNull
@@ -42,16 +48,21 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final MusicModel musicModel = dataSource.get(position);
+
         if (!isRvHeightSet)
             setRecyclerViewHeight();
         // 使用Clide将目标url图片资源显示在目标item的imageView上
-        Glide.with(context).load("http://res.lgdsunday.club/poster-1.png")
+        Glide.with(context).load(musicModel.getPoster())
                 .into(holder.ivIcon);
+        holder.tvName.setText(musicModel.getName());
+        holder.tvAuthor.setText(musicModel.getAuthor());
         // 为每个音乐元素注册点击事件
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PlayMusicActivity.class);
+                intent.putExtra(PlayMusicActivity.MUSIC_ID, musicModel.getMusicId());
                 context.startActivity(intent);
             }
         });
@@ -59,7 +70,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     @Override
     public int getItemCount() {
-        return 8;
+        return dataSource.size();
     }
 
     // 计算RecyclerView高度
@@ -83,13 +94,16 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
         ImageView ivIcon;
         View itemView;
-
+        TextView tvName, tvAuthor;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.itemView = itemView;
             // 获取item的imageView
             ivIcon = itemView.findViewById(R.id.iv_icon);
-            this.itemView = itemView;
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvAuthor = itemView.findViewById(R.id.tv_author);
+
         }
     }
 }
