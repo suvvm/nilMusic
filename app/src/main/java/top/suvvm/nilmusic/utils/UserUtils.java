@@ -132,4 +132,36 @@ public class UserUtils {
     public static boolean validateUserLogin(Context context) {
         return SharedPreferencesUtils.isLoginUser(context);
     }
+    // 修改密码
+    public static boolean changePassword(Context context, String oldPassword, String password, String passwordConfirm) {
+        // 验证用户输入合法性
+        if (TextUtils.isEmpty(oldPassword)) {
+            Toast.makeText(context, "请输入原密码" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(context, "请输入新密码" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(passwordConfirm)) {
+            Toast.makeText(context, "请输入确认密码" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 验证新密码与确认是否相同
+        if (!password.equals(passwordConfirm)) {
+            Toast.makeText(context, "密码不一致" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 验证原密码是否正确
+        RealmHelp realmHelp = new RealmHelp();
+        UserModel userModel = realmHelp.getUser();  // 在realm中获取当前登录用户模型
+        if (!EncryptUtils.encryptMD5ToString(oldPassword).equals(userModel.getPassword())) {
+            Toast.makeText(context, "原密码不正确" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // 更新密码记录
+        realmHelp.changePassword(EncryptUtils.encryptMD5ToString(password));
+        realmHelp.close();
+        return true;
+    }
 }

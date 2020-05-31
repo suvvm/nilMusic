@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+
 /**
  * @ClassName: LoadingActivity
  * @Description: 登录活动
@@ -45,6 +46,7 @@ public class LoginActivity extends BaseActivity {
     public void onCommitClick(View view) {
         String pnum = inputPhone.getInputVal();
         String psw = inputPassword.getInputVal();
+
         // 验证用户
         if (!UserUtils.judgeLoginDate(this, pnum, psw))
             return;

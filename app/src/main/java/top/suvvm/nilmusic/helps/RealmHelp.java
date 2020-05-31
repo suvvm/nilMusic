@@ -58,4 +58,30 @@ public class RealmHelp {
             return true;
         return false;
     }
+
+    // 获取当前登录用户
+    public UserModel getUser() {
+        RealmQuery<UserModel> query = realm.where(UserModel.class);
+        UserModel user = query.equalTo("phone", UserHelp.getInstance().getPhone()).findFirst();
+        return user;
+    }
+
+    // 修改用户密码
+    public void changePassword (String password) {
+        UserModel userModel = getUser();
+        realm.beginTransaction();
+        userModel.setPassword(password);
+        realm.commitTransaction();
+    }
+
+    // 修改用户密码 废弃
+    @Deprecated
+    public void changePasswordByUser (UserModel userModel) {
+        RealmQuery<UserModel> query = realm.where(UserModel.class);
+        UserModel user = query.equalTo("phone", userModel.getPhone()).findFirst();
+
+        realm.beginTransaction();
+        user.setPassword(userModel.getPassword());
+        realm.commitTransaction();
+    }
 }
