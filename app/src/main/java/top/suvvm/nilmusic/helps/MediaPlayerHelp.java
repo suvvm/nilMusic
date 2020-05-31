@@ -37,11 +37,12 @@ public class MediaPlayerHelp {
 
     // setPath 指定播放音乐地址
     public void setPath(String path) {
-        this.path = path;
-        // 判断音乐是否正在播放
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.reset();    // 正在播放则重置播放状态
+
+        // 判断音乐是否正在播放 或是否更换音乐
+        if (mediaPlayer.isPlaying() || !this.path.equals(path)) {
+            mediaPlayer.reset();    // 正在播放或更换音乐则重置播放状态
         }
+        this.path = path;
         // 设置播放音乐路径
         try {
             mediaPlayer.setDataSource(context, Uri.parse(path));
