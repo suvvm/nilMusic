@@ -39,7 +39,7 @@ public class MediaPlayerHelp {
     public void setPath(String path) {
 
         // 判断音乐是否正在播放 或是否更换音乐
-        if (mediaPlayer.isPlaying() || !this.path.equals(path)) {
+        if (mediaPlayer.isPlaying() || !path.equals(this.path)) {
             mediaPlayer.reset();    // 正在播放或更换音乐则重置播放状态
         }
         this.path = path;
