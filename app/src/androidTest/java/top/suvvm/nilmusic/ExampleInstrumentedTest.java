@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.utils.UserUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,5 +25,9 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("top.suvvm.nilmusic", appContext.getPackageName());
+//
+//        RealmHelp realmHelp = new RealmHelp();
+//        realmHelp.removeMusicSource(appContext);
+        //       UserUtils.logout(appContext);
     }
 }

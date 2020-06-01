@@ -99,7 +99,8 @@ public class RealmHelp {
     // 保存音乐源数据
     public void setMusicSource(Context context) {
         // 获取json数据
-        String musicJson = DataUtils.getJsonFromAssets(context, "DataSource.json");
+        String musicJson = DataUtils.getJsonFromUrl("https://www.suvvm.work/nilMusicData/DataSource.json");
+        // String musicJson = DataUtils.getJsonFromAssets(context, "DataSource.json");
         realm.beginTransaction();
         realm.createObjectFromJson(MusicSourceModel.class, musicJson);
         realm.commitTransaction();

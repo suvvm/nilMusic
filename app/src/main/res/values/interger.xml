@@ -4,5 +4,5 @@
     <!--光盘旋转一圈所需时间-->
     <integer name="play_music_anim_duration">10000</integer>
     <!--指针旋转所需时间-->
-    <integer name="play_needle_anim_duration">6000</integer>
+    <integer name="play_needle_anim_duration">3000</integer>
 </resources>
