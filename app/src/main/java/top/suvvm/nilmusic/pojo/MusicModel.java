@@ -1,5 +1,7 @@
 package top.suvvm.nilmusic.pojo;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
 /**
@@ -8,7 +10,7 @@ import io.realm.RealmObject;
  * @Author: SUVVM
  * @Date: 2020/5/31 18:44
  */
-public class MusicModel extends RealmObject {
+public class MusicModel extends RealmObject implements Serializable {
     private String musicId;
     private String name;
     private String poster;

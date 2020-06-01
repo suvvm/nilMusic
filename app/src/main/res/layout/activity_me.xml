@@ -29,6 +29,17 @@
         android:layout_marginTop="@dimen/marginSize"
         android:onClick="onChangeClick"
         android:background="@drawable/item_commit_select"/>
+    <!--自定义音乐-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/itemHeight"
+        android:paddingLeft="@dimen/marginSize"
+        android:layout_gravity="center_vertical"
+        android:text="自定义播放"
+        android:textSize="@dimen/titleSize"
+        android:layout_marginTop="@dimen/marginSize"
+        android:onClick="onCustomizeClick"
+        android:background="@drawable/item_commit_select"/>
     <Button
         style="@style/commentButton"
         android:text="退出登录"

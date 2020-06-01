@@ -18,6 +18,8 @@ import com.bumptech.glide.request.RequestOptions;
 public class PlayMusicActivity extends BaseActivity {
 
     public static final String MUSIC_ID = "musicId";
+    public static final String IS_CUSTOMIZE = "isCustomize";
+    public static final String CUSTOMIZE_MODEL = "customizeModel";
 
     private ImageView bgImageView;
     private PlayMusicView playMusicView;
@@ -40,6 +42,11 @@ public class PlayMusicActivity extends BaseActivity {
 
     // 初始化音乐数据
     private void initData() {
+        if (getIntent().getBooleanExtra(IS_CUSTOMIZE,false)) {
+            realmHelp = new RealmHelp();
+            musicModel = (MusicModel)getIntent().getSerializableExtra(CUSTOMIZE_MODEL);
+            return;
+        }
         musicId = getIntent().getStringExtra(MUSIC_ID);
         realmHelp = new RealmHelp();
         musicModel = realmHelp.getMusic(musicId);
