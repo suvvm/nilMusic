@@ -60,19 +60,22 @@ public class UserUtils {
         userModel.setPhone(pnum);
         // 加密存储密码
         userModel.setPassword(psw);
+
+        String uid;
         try {
             LoginModel resp = UserClient.login(userModel);
             if (!resp.getCode().equals(HttpClient.HandlerSuccess)) {
                 Toast.makeText(context, resp.getMsg() , Toast.LENGTH_SHORT).show();
                 return false;
             }
+            uid = resp.getUid();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
 
         // 保存用户登录标记
-        boolean isSave = SharedPreferencesUtils.saveUser(context, pnum);
+        boolean isSave = SharedPreferencesUtils.saveUser(context, pnum, uid);
         if (!isSave) {
             Toast.makeText(context, "登录状态保存错误" , Toast.LENGTH_SHORT).show();
             return false;
@@ -80,6 +83,7 @@ public class UserUtils {
 
         // 利用单例UserHelper保存用户登录信息
         UserHelp.getInstance().setPhone(pnum);
+        UserHelp.getInstance().setId(uid);
 
         RealmHelp realmHelp = new RealmHelp();
         // 保存音乐源数据
