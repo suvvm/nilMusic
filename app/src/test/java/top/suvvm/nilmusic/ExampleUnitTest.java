@@ -20,6 +20,6 @@ public class ExampleUnitTest {
 
     @Test
     public void testGetData() {
-        DataUtils.getMusicData();
+        System.out.println(DataUtils.getMusicData());
     }
 }

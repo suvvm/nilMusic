@@ -105,7 +105,7 @@ public class DataUtils {
             for (JSONObject album : resp.getAlbumList()) {
                 GetMusicRespModel musicResp = MusicClient.GetMusic(album.getString("id"));
                 album.put("playNum", album.get("play_num"));
-                album.remove("id");
+                album.remove("play_num");
                 album.put("list", musicResp.getMusicList());
             }
             userAlbumInfo.put("album", resp.getAlbumList());
@@ -115,7 +115,14 @@ public class DataUtils {
                 userAlbumInfo.put("hot", musicResp.getMusicList());
                 break;
             }
-
+            GetAlbumRespModel respSelf = AlbumClient.GetAllAlbum("10000005");
+            for (JSONObject album : respSelf.getAlbumList()) {
+                GetMusicRespModel musicResp = MusicClient.GetMusic(album.getString("id"));
+                album.put("playNum", album.get("play_num"));
+                album.remove("play_num");
+                album.put("list", musicResp.getMusicList());
+            }
+            userAlbumInfo.put("self", respSelf.getAlbumList());
             return userAlbumInfo.toJSONString();
         } catch (IOException e) {
             e.printStackTrace();

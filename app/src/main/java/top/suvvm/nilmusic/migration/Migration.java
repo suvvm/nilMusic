@@ -21,14 +21,14 @@ public class Migration  implements RealmMigration {
 
             // 告知realm发生变动的模型和字段
             schema.create("MusicModel")
-                    .addField("musicId", String.class)
+                    .addField("id", String.class)
                     .addField("name", String.class)
                     .addField("poster", String.class)
                     .addField("path", String.class)
                     .addField("author", String.class);
 
             schema.create("AlbumModel")
-                    .addField("albumId", String.class)
+                    .addField("id", String.class)
                     .addField("name", String.class)
                     .addField("poster", String.class)
                     .addField("playNum", String.class)
@@ -36,7 +36,8 @@ public class Migration  implements RealmMigration {
 
             schema.create("MusicSourceModel")
                     .addRealmListField("album", schema.get("AlbumModel"))
-                    .addRealmListField("hot", schema.get("MusicModel"));
+                    .addRealmListField("hot", schema.get("MusicModel"))
+                    .addRealmListField("self", schema.get("AlbumModel"));
 
             oldVersion = newVersion;
         }

@@ -12,6 +12,15 @@ import io.realm.RealmObject;
 public class MusicSourceModel extends RealmObject {
     private RealmList<AlbumModel> album;
     private RealmList<MusicModel> hot;
+    private RealmList<AlbumModel> self;
+
+    public RealmList<AlbumModel> getSelf() {
+        return self;
+    }
+
+    public void setSelf(RealmList<AlbumModel> self) {
+        this.self = self;
+    }
 
     public RealmList<AlbumModel> getAlbum() {
         return album;
