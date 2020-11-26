@@ -11,18 +11,18 @@ import io.realm.RealmObject;
  * @Date: 2020/5/31 18:44
  */
 public class MusicModel extends RealmObject implements Serializable {
-    private String musicId;
+    private String id;
     private String name;
     private String poster;
     private String path;
     private String author;
 
-    public String getMusicId() {
-        return musicId;
+    public String getId() {
+        return id;
     }
 
-    public void setMusicId(String musicId) {
-        this.musicId = musicId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

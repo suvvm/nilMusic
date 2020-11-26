@@ -15,6 +15,8 @@ public class UserHelp {
     // 用户标记（手机号）
     private String phone;
 
+    private String id;
+
     // 在静态域中声明单例的实例对象
     private volatile static UserHelp instance;
 
@@ -27,6 +29,14 @@ public class UserHelp {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     // 加锁的访问该实例的方法

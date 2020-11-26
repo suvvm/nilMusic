@@ -2,6 +2,9 @@ package top.suvvm.nilmusic;
 
 import org.junit.Test;
 
+import top.suvvm.nilmusic.utils.DataUtils;
+import top.suvvm.nilmusic.utils.UserUtils;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,5 +16,10 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+    }
+
+    @Test
+    public void testGetData() {
+        DataUtils.getMusicData();
     }
 }

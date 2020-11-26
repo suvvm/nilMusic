@@ -17,10 +17,11 @@ import top.suvvm.nilmusic.helps.UserHelp;
  */
 public class SharedPreferencesUtils {
     // 当用户登录时，利用SharedPreferences保存用户登录标记（手机号）
-    public static boolean saveUser(Context context, String phone) {
+    public static boolean saveUser(Context context, String phone, String id) {
         SharedPreferences preferences = context.getSharedPreferences(SharePreferencesConstants.SP_NAME_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(SharePreferencesConstants.SP_KEY_PHONE, phone);
+        editor.putString(SharePreferencesConstants.SP_KEY_ID, id);
         boolean res = editor.commit();
         return res;
     }
@@ -29,6 +30,7 @@ public class SharedPreferencesUtils {
         SharedPreferences preferences = context.getSharedPreferences(SharePreferencesConstants.SP_NAME_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(SharePreferencesConstants.SP_KEY_PHONE);
+        editor.remove(SharePreferencesConstants.SP_KEY_ID);
         boolean res = editor.commit();
         return res;
     }
@@ -39,10 +41,12 @@ public class SharedPreferencesUtils {
 
         SharedPreferences preferences = context.getSharedPreferences(SharePreferencesConstants.SP_NAME_USER, Context.MODE_PRIVATE);
         String phone = preferences.getString(SharePreferencesConstants.SP_KEY_PHONE, "");
-        if (!TextUtils.isEmpty(phone)) {    // 已存在登录用户
+        String id = preferences.getString(SharePreferencesConstants.SP_KEY_ID, "");
+        if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(id)) {    // 已存在登录用户
             res = true;
             // 利用单例UserHelper保存用户登录信息
             UserHelp.getInstance().setPhone(phone);
+            UserHelp.getInstance().setId(id);
         }
 
         return res;

@@ -11,12 +11,17 @@ import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.LoginActivity;
 import top.suvvm.nilmusic.helps.RealmHelp;
 import top.suvvm.nilmusic.helps.UserHelp;
+import top.suvvm.nilmusic.http.HttpClient;
+import top.suvvm.nilmusic.http.UserClient;
+import top.suvvm.nilmusic.pojo.HttpRespModel;
+import top.suvvm.nilmusic.pojo.LoginModel;
 import top.suvvm.nilmusic.pojo.UserModel;
 
 /**
@@ -37,22 +42,40 @@ public class UserUtils {
             Toast.makeText(context, "输入密码为空" , Toast.LENGTH_SHORT).show();
             return false;
         }
-        // 用户手机号是否存在
-        if (!userExistFromPhone(pnum)) {
-            Toast.makeText(context, "输入手机号未注册" , Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        // 手机号与密码是否匹配
-        RealmHelp realmHelp = new RealmHelp();
-        boolean res = realmHelp.validateUser(pnum, EncryptUtils.encryptMD5ToString(psw));
+//        // 用户手机号是否存在
+//        if (!userExistFromPhone(pnum)) {
+//            Toast.makeText(context, "输入手机号未注册" , Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        // 手机号与密码是否匹配
+//        RealmHelp realmHelp = new RealmHelp();
+//        boolean res = realmHelp.validateUser(pnum, EncryptUtils.encryptMD5ToString(psw));
+//
+//        if (!res) {
+//            Toast.makeText(context, "密码错误" , Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
 
-        if (!res) {
-            Toast.makeText(context, "密码错误" , Toast.LENGTH_SHORT).show();
+        UserModel userModel = new UserModel();
+        userModel.setPhone(pnum);
+        // 加密存储密码
+        userModel.setPassword(psw);
+
+        String uid;
+        try {
+            LoginModel resp = UserClient.login(userModel);
+            if (!resp.getCode().equals(HttpClient.HandlerSuccess)) {
+                Toast.makeText(context, resp.getMsg() , Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            uid = resp.getUid();
+        } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
 
         // 保存用户登录标记
-        boolean isSave = SharedPreferencesUtils.saveUser(context, pnum);
+        boolean isSave = SharedPreferencesUtils.saveUser(context, pnum, uid);
         if (!isSave) {
             Toast.makeText(context, "登录状态保存错误" , Toast.LENGTH_SHORT).show();
             return false;
@@ -60,7 +83,9 @@ public class UserUtils {
 
         // 利用单例UserHelper保存用户登录信息
         UserHelp.getInstance().setPhone(pnum);
+        UserHelp.getInstance().setId(uid);
 
+        RealmHelp realmHelp = new RealmHelp();
         // 保存音乐源数据
         realmHelp.setMusicSource(context);
 
@@ -103,18 +128,29 @@ public class UserUtils {
             Toast.makeText(context, "密码无效" , Toast.LENGTH_SHORT).show();
             return false;
         }
-        // 验证当前手机号是否已被注册
-        if (userExistFromPhone(phone)) {
-            Toast.makeText(context, "手机号已存在" , Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        // 保存用户信息至realm数据库
+//        // 验证当前手机号是否已被注册
+//        if (userExistFromPhone(phone)) {
+//            Toast.makeText(context, "手机号已存在" , Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        // 保存用户信息至realm数据库
+        // 保存用户信息至服务端
         UserModel userModel = new UserModel();
         userModel.setPhone(phone);
         // 加密存储密码
-        userModel.setPassword(EncryptUtils.encryptMD5ToString(password));
-
-        saveUser(userModel);
+        userModel.setPassword(password);
+        try {
+            HttpRespModel resp = UserClient.register(userModel);
+            System.out.println(resp.toString());
+            if (!resp.getCode().equals(HttpClient.HandlerSuccess)) {
+                Toast.makeText(context, resp.getMsg() , Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+//        saveUser(userModel);
         return true;
     }
     // 根据手机号判断用户是否存在

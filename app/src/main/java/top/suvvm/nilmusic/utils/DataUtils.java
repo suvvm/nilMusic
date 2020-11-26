@@ -3,7 +3,10 @@ package top.suvvm.nilmusic.utils;
 import android.content.Context;
 import android.content.res.AssetManager;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +15,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import top.suvvm.nilmusic.helps.UserHelp;
+import top.suvvm.nilmusic.http.AlbumClient;
+import top.suvvm.nilmusic.http.MusicClient;
+import top.suvvm.nilmusic.http.UserClient;
+import top.suvvm.nilmusic.pojo.GetAlbumRespModel;
+import top.suvvm.nilmusic.pojo.GetMusicRespModel;
 
 /**
  * @ClassName: DattaUtils
@@ -85,5 +95,31 @@ public class DataUtils {
         }
 
         return stringBuilder.toString();
+    }
+
+    public static String getMusicData() {
+        // AlbumClient.GetAllAlbum(UserHelp.getInstance().getId());
+        JSONObject userAlbumInfo = new JSONObject();
+        try {
+            GetAlbumRespModel resp = AlbumClient.GetAllAlbum("10000000");
+            for (JSONObject album : resp.getAlbumList()) {
+                GetMusicRespModel musicResp = MusicClient.GetMusic(album.getString("id"));
+                album.put("playNum", album.get("play_num"));
+                album.remove("id");
+                album.put("list", musicResp.getMusicList());
+            }
+            userAlbumInfo.put("album", resp.getAlbumList());
+            GetAlbumRespModel resp_hot = AlbumClient.GetAllAlbum("10000003");
+            for (JSONObject album : resp_hot.getAlbumList()) {
+                GetMusicRespModel musicResp = MusicClient.GetMusic(album.getString("id"));
+                userAlbumInfo.put("hot", musicResp.getMusicList());
+                break;
+            }
+
+            return userAlbumInfo.toJSONString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
