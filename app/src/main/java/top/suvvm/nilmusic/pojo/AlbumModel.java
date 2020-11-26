@@ -10,18 +10,18 @@ import io.realm.RealmObject;
  * @Date: 2020/5/31 18:42
  */
 public class AlbumModel extends RealmObject {
-    private String albumId;
+    private String id;
     private String name;
     private String poster;
     private String playNum;
     private RealmList<MusicModel> list;
 
-    public String getAlbumId() {
-        return albumId;
+    public String getId() {
+        return id;
     }
 
-    public void setAlbumId(String albumId) {
-        this.albumId = albumId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

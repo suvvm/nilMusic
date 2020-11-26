@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MeActivity extends BaseActivity {
 
@@ -60,7 +59,7 @@ public class MeActivity extends BaseActivity {
                         etPath = inpView.findViewById(R.id.et_path);
                         etPoster = inpView.findViewById(R.id.et_poster);
 
-                        musicModel.setMusicId("1000000");
+                        musicModel.setId("1000000");
                         musicModel.setAuthor(etAuthor.getText().toString());
                         musicModel.setName(etName.getText().toString());
                         musicModel.setPath(etPath.getText().toString());

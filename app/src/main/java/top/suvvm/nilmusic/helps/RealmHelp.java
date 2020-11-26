@@ -99,8 +99,9 @@ public class RealmHelp {
     // 保存音乐源数据
     public void setMusicSource(Context context) {
         // 获取json数据
-        String musicJson = DataUtils.getJsonFromUrl("https://www.suvvm.work/nilMusicData/DataSource.json");
+        // String musicJson = DataUtils.getJsonFromUrl("https://www.suvvm.work/nilMusicData/DataSource.json");
         // String musicJson = DataUtils.getJsonFromAssets(context, "DataSource.json");
+        String musicJson = DataUtils.getMusicData();
         realm.beginTransaction();
         realm.createObjectFromJson(MusicSourceModel.class, musicJson);
         realm.commitTransaction();
@@ -145,12 +146,12 @@ public class RealmHelp {
 
     // 根据id返回歌单
     public AlbumModel getAlbum(String albumId) {
-        return realm.where(AlbumModel.class).equalTo("albumId", albumId).findFirst();
+        return realm.where(AlbumModel.class).equalTo("id", albumId).findFirst();
     }
 
     // 根据id返回音乐
     public MusicModel getMusic(String musicId) {
-        return realm.where(MusicModel.class).equalTo("musicId", musicId).findFirst();
+        return realm.where(MusicModel.class).equalTo("id", musicId).findFirst();
     }
 
 }

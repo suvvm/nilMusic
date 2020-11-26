@@ -46,7 +46,7 @@ public class AlbumClient extends HttpClient {
         return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
     }
 
-    public static GetAlbumRespModel GetAllAlbum (UserModel user, Integer uid) throws IOException {
+    public static GetAlbumRespModel GetAllAlbum (String uid) throws IOException {
         String reqUrl = String.format(ALL_ALBUM_URL, uid);
         final Request request = new Request.Builder()
                 .url(reqUrl)
@@ -75,7 +75,7 @@ public class AlbumClient extends HttpClient {
     public static HttpRespModel DelAlbum (UserModel user, AlbumModel album, Integer uid) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
-        jsonObject.put("aid", Integer.valueOf(album.getAlbumId()));
+        jsonObject.put("aid", Integer.valueOf(album.getId()));
         RequestBody body = RequestBody.create(jsonObject.toJSONString(), HTTPJSON);
         final Request request = new Request.Builder()
                 .url(DELETE_ALBUM_URL)

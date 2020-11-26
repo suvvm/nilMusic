@@ -16,7 +16,7 @@ import top.suvvm.nilmusic.pojo.MusicModel;
 public class MusicClient extends HttpClient {
     public static HttpRespModel CreateMusic (AlbumModel album, MusicModel music) throws IOException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("aid", Integer.valueOf(album.getAlbumId()));
+        jsonObject.put("aid", Integer.valueOf(album.getId()));
         jsonObject.put("name", music.getName());
         jsonObject.put("poster",music.getPoster());
         jsonObject.put("path",music.getPath());
@@ -46,8 +46,8 @@ public class MusicClient extends HttpClient {
         return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
     }
 
-    public static GetMusicRespModel GetMusic (AlbumModel album) throws IOException {
-        String reqUrl = String.format(ALL_MUSIC_URL, album.getAlbumId());
+    public static GetMusicRespModel GetMusic (String aid) throws IOException {
+        String reqUrl = String.format(ALL_MUSIC_URL, aid);
         final Request request = new Request.Builder()
                 .url(reqUrl)
                 .get()
@@ -74,7 +74,7 @@ public class MusicClient extends HttpClient {
 
     public static HttpRespModel MdfMusic (MusicModel music) throws IOException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("aid", Integer.valueOf(music.getMusicId()));
+        jsonObject.put("aid", Integer.valueOf(music.getId()));
         jsonObject.put("name", music.getName());
         jsonObject.put("poster",music.getPoster());
         jsonObject.put("path",music.getPath());
@@ -107,8 +107,8 @@ public class MusicClient extends HttpClient {
 
     public static HttpRespModel DelMusic (AlbumModel album , MusicModel music) throws IOException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("aid", Integer.valueOf(album.getAlbumId()));
-        jsonObject.put("mid", Integer.valueOf(music.getMusicId()));
+        jsonObject.put("aid", Integer.valueOf(album.getId()));
+        jsonObject.put("mid", Integer.valueOf(music.getId()));
         RequestBody body = RequestBody.create(jsonObject.toJSONString(), HTTPJSON);
 
         final Request request = new Request.Builder()

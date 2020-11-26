@@ -10,7 +10,7 @@ public abstract class HttpClient {
     public static final String REGISTER_URL = "http://www.suvvm.work:6789/nilmusic/user/register";
     public static final String LOGIN_URL = "http://www.suvvm.work:6789/nilmusic/user/login";
 
-    public static final String ALL_ALBUM_URL = "http://www.suvvm.work:6789/nilmusic/album/all?uid=%d";
+    public static final String ALL_ALBUM_URL = "http://www.suvvm.work:6789/nilmusic/album/all?uid=%s";
     public static final String CREATE_ALBUM_URL = "http://www.suvvm.work:6789/nilmusic/album/create";
     public static final String DELETE_ALBUM_URL = "http://www.suvvm.work:6789/nilmusic/album/delete";
 

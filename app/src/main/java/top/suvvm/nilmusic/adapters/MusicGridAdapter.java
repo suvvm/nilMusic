@@ -52,7 +52,7 @@ public class MusicGridAdapter extends RecyclerView.Adapter<MusicGridAdapter.View
             public void onClick(View v) {
                 Intent intent = new Intent(context, AlbumListActivity.class);
                 // 传递参数
-                intent.putExtra(AlbumListActivity.ALBUM_ID, albumModel.getAlbumId());
+                intent.putExtra(AlbumListActivity.ALBUM_ID, albumModel.getId());
                 context.startActivity(intent);
             }
         });
