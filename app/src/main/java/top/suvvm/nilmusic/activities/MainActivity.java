@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import top.suvvm.nilmusic.R;
+import top.suvvm.nilmusic.adapters.AlbumListAdapter;
 import top.suvvm.nilmusic.adapters.MusicGridAdapter;
 import top.suvvm.nilmusic.adapters.MusicListAdapter;
 import top.suvvm.nilmusic.helps.RealmHelp;
@@ -15,9 +16,10 @@ import android.os.Bundle;
 
 public class MainActivity extends BaseActivity {
 
-    private RecyclerView recyclerViewGrid, recyclerViewList;
+    private RecyclerView recyclerViewGrid, recyclerViewList, recyclerViewAlbumList;
     private MusicGridAdapter musicGridAdapter;
     private MusicListAdapter musicListAdapter;
+    private AlbumListAdapter albumListAdapter;
     private RealmHelp realmHelp;
     private MusicSourceModel musicSourceModel;
 
@@ -40,6 +42,15 @@ public class MainActivity extends BaseActivity {
         recyclerViewGrid.setNestedScrollingEnabled(false);  // 禁止滚动
         musicGridAdapter = new MusicGridAdapter(this, musicSourceModel.getAlbum());
         recyclerViewGrid.setAdapter(musicGridAdapter);
+
+        // 获取recyclerViewGrid 初始化专辑列表
+        recyclerViewAlbumList = findViewById(R.id.rv_album_list);
+        recyclerViewAlbumList.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewAlbumList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));    // 分割线
+        recyclerViewAlbumList.setNestedScrollingEnabled(false);  // 禁止滚动
+        albumListAdapter = new AlbumListAdapter(this, recyclerViewList, musicSourceModel.getSelf());
+        recyclerViewAlbumList.setAdapter(albumListAdapter);
+
         // 获取recyclerViewGrid 初始化歌曲列表
         recyclerViewList = findViewById(R.id.rv_list);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));

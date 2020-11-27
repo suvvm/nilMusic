@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import top.suvvm.nilmusic.R;
+import top.suvvm.nilmusic.activities.AlbumListActivity;
 import top.suvvm.nilmusic.activities.PlayMusicActivity;
 import top.suvvm.nilmusic.pojo.AlbumModel;
 
@@ -56,8 +57,9 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PlayMusicActivity.class);
-                intent.putExtra(PlayMusicActivity.MUSIC_ID, albumModel.getId());
+                Intent intent = new Intent(context, AlbumListActivity.class);
+                // 传递参数
+                intent.putExtra(AlbumListActivity.ALBUM_ID, albumModel.getId());
                 context.startActivity(intent);
             }
         });
