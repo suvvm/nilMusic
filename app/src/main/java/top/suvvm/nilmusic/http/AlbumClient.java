@@ -1,5 +1,7 @@
 package top.suvvm.nilmusic.http;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -43,7 +45,9 @@ public class AlbumClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "CreateAlbum", resData);
+        return JSON.parseObject(resData, HttpRespModel.class);
     }
 
     public static GetAlbumRespModel GetAllAlbum (String uid) throws IOException {
@@ -69,7 +73,9 @@ public class AlbumClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), GetAlbumRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "GetAllAlbum", resData);
+        return JSON.parseObject(resData, GetAlbumRespModel.class);
     }
 
     public static HttpRespModel DelAlbum (UserModel user, AlbumModel album, Integer uid) throws IOException {
@@ -98,6 +104,8 @@ public class AlbumClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "DelAlbum", resData);
+        return JSON.parseObject(resData, HttpRespModel.class);
     }
 }

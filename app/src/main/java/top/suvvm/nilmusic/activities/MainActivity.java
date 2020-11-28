@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity {
         recyclerViewAlbumList.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAlbumList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));    // 分割线
         recyclerViewAlbumList.setNestedScrollingEnabled(false);  // 禁止滚动
-        albumListAdapter = new AlbumListAdapter(this, recyclerViewList, musicSourceModel.getSelf());
+        albumListAdapter = new AlbumListAdapter(this, recyclerViewAlbumList, musicSourceModel.getSelf());
         recyclerViewAlbumList.setAdapter(albumListAdapter);
 
         // 获取recyclerViewGrid 初始化歌曲列表

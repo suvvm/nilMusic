@@ -1,5 +1,7 @@
 package top.suvvm.nilmusic.http;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -43,6 +45,7 @@ public class MusicClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Log.println(Log.DEBUG, "CreateMusic", response[0].body().string());
         return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
     }
 
@@ -69,7 +72,9 @@ public class MusicClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), GetMusicRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "GetMusic", resData);
+        return JSON.parseObject(resData, GetMusicRespModel.class);
     }
 
     public static HttpRespModel MdfMusic (MusicModel music) throws IOException {
@@ -102,7 +107,9 @@ public class MusicClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "MdfMusic", resData);
+        return JSON.parseObject(resData, HttpRespModel.class);
     }
 
     public static HttpRespModel DelMusic (AlbumModel album , MusicModel music) throws IOException {
@@ -132,6 +139,8 @@ public class MusicClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "DelMusic", resData);
+        return JSON.parseObject(resData, HttpRespModel.class);
     }
 }

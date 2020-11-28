@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.StringUtils;
@@ -33,7 +32,7 @@ import top.suvvm.nilmusic.pojo.UserModel;
 public class UserUtils {
 
     // 验证用户
-    public static boolean judgeLoginDate(Context context, String pnum, String psw) {
+    public static boolean judgeLoginDate(final Context context, String pnum, String psw) {
         if (!RegexUtils.isMobileExact(pnum)) {
             Toast.makeText(context, "手机号无效" , Toast.LENGTH_SHORT).show();
             return false;
@@ -61,7 +60,7 @@ public class UserUtils {
         // 加密存储密码
         userModel.setPassword(psw);
 
-        String uid;
+        Integer uid;
         try {
             LoginModel resp = UserClient.login(userModel);
             if (!resp.getCode().equals(HttpClient.HandlerSuccess)) {
@@ -83,7 +82,7 @@ public class UserUtils {
 
         // 利用单例UserHelper保存用户登录信息
         UserHelp.getInstance().setPhone(pnum);
-        UserHelp.getInstance().setId(uid);
+        UserHelp.getInstance().setId(uid.toString());
 
         RealmHelp realmHelp = new RealmHelp();
         // 保存音乐源数据
@@ -91,6 +90,19 @@ public class UserUtils {
 
         realmHelp.close();
 
+//        final Context finContext = context;
+//
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                RealmHelp realmHelp = new RealmHelp();
+//                // 保存音乐源数据
+//                realmHelp.setMusicSource(finContext);
+//
+//                realmHelp.close();
+//            }
+//        });
+//        thread.run();
         return true;
     }
 

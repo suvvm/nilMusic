@@ -22,6 +22,8 @@
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.MdfAlbumActivity" />
+        <activity android:name=".activities.MyAlbumListActivity" />
         <activity android:name=".activities.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -102,6 +102,7 @@ public class RealmHelp {
         // String musicJson = DataUtils.getJsonFromUrl("https://www.suvvm.work/nilMusicData/DataSource.json");
         // String musicJson = DataUtils.getJsonFromAssets(context, "DataSource.json");
         String musicJson = DataUtils.getMusicData();
+        System.out.println(musicJson);
         realm.beginTransaction();
         realm.createObjectFromJson(MusicSourceModel.class, musicJson);
         realm.commitTransaction();
