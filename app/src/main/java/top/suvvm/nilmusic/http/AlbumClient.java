@@ -1,5 +1,7 @@
 package top.suvvm.nilmusic.http;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -8,6 +10,7 @@ import java.io.IOException;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import top.suvvm.nilmusic.pojo.CreateAlbumRespModel;
 import top.suvvm.nilmusic.pojo.GetAlbumRespModel;
 import top.suvvm.nilmusic.pojo.HttpRespModel;
 import top.suvvm.nilmusic.pojo.AlbumModel;
@@ -15,7 +18,7 @@ import top.suvvm.nilmusic.pojo.UserModel;
 
 public class AlbumClient extends HttpClient {
 
-    public static HttpRespModel CreateAlbum (UserModel user, AlbumModel album, Integer uid) throws IOException {
+    public static CreateAlbumRespModel CreateAlbum (AlbumModel album, Integer uid) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
         jsonObject.put("name", album.getName());
@@ -43,7 +46,9 @@ public class AlbumClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "CreateAlbum", resData);
+        return JSON.parseObject(resData, CreateAlbumRespModel.class);
     }
 
     public static GetAlbumRespModel GetAllAlbum (String uid) throws IOException {
@@ -69,17 +74,19 @@ public class AlbumClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), GetAlbumRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "GetAllAlbum", resData);
+        return JSON.parseObject(resData, GetAlbumRespModel.class);
     }
 
-    public static HttpRespModel DelAlbum (UserModel user, AlbumModel album, Integer uid) throws IOException {
+    public static HttpRespModel DelAlbum (Integer aid, Integer uid) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
-        jsonObject.put("aid", Integer.valueOf(album.getId()));
+        jsonObject.put("aid", aid);
         RequestBody body = RequestBody.create(jsonObject.toJSONString(), HTTPJSON);
         final Request request = new Request.Builder()
                 .url(DELETE_ALBUM_URL)
-                .post(body)
+                .delete(body)
                 .build();
         final Response[] response = new Response[1];
         Thread thread = new Thread(new Runnable() {
@@ -98,6 +105,8 @@ public class AlbumClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "DelAlbum", resData);
+        return JSON.parseObject(resData, HttpRespModel.class);
     }
 }

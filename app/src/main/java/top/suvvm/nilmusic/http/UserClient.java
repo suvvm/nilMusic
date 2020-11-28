@@ -1,5 +1,7 @@
 package top.suvvm.nilmusic.http;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.EncryptUtils;
@@ -41,7 +43,9 @@ public class UserClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "register", resData);
+        return JSON.parseObject(resData, HttpRespModel.class);
     }
 
     public static LoginModel login (UserModel user) throws IOException {
@@ -70,6 +74,8 @@ public class UserClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(response[0].body().string(), LoginModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "login", resData);
+        return JSON.parseObject(resData, LoginModel.class);
     }
 }

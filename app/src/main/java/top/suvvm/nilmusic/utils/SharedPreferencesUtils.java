@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.SPStaticUtils;
-
 import top.suvvm.nilmusic.constants.SharePreferencesConstants;
 import top.suvvm.nilmusic.helps.UserHelp;
 
@@ -17,11 +15,11 @@ import top.suvvm.nilmusic.helps.UserHelp;
  */
 public class SharedPreferencesUtils {
     // 当用户登录时，利用SharedPreferences保存用户登录标记（手机号）
-    public static boolean saveUser(Context context, String phone, String id) {
+    public static boolean saveUser(Context context, String phone, Integer id) {
         SharedPreferences preferences = context.getSharedPreferences(SharePreferencesConstants.SP_NAME_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(SharePreferencesConstants.SP_KEY_PHONE, phone);
-        editor.putString(SharePreferencesConstants.SP_KEY_ID, id);
+        editor.putString(SharePreferencesConstants.SP_KEY_ID, id.toString());
         boolean res = editor.commit();
         return res;
     }

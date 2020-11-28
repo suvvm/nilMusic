@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import top.suvvm.nilmusic.migration.Migration;
@@ -97,23 +98,71 @@ public class RealmHelp {
     // 用户退出删除数据
 
     // 保存音乐源数据
-    public void setMusicSource(Context context) {
+    public void setMusicSource() {
         // 获取json数据
         // String musicJson = DataUtils.getJsonFromUrl("https://www.suvvm.work/nilMusicData/DataSource.json");
         // String musicJson = DataUtils.getJsonFromAssets(context, "DataSource.json");
         String musicJson = DataUtils.getMusicData();
+//        System.out.println(musicJson);
         realm.beginTransaction();
         realm.createObjectFromJson(MusicSourceModel.class, musicJson);
         realm.commitTransaction();
     }
 
     // 删除音乐源数据
-    public void removeMusicSource(Context context) {
+    public void removeMusicSource() {
         realm.beginTransaction();
         realm.delete(MusicSourceModel.class);
         realm.delete(MusicModel.class);
         realm.delete(AlbumModel.class);
         realm.commitTransaction();
+    }
+
+    public void updateMusicSource(String aid, MusicModel music) {
+        realm.beginTransaction();
+        AlbumModel album = realm.where(AlbumModel.class).equalTo("id", aid).findFirst();
+        RealmList list = album.getList();
+        list.add(music);
+        album.setList(list);
+        realm.commitTransaction();
+    }
+
+    public void deleteMusic(String mid) {
+        realm.beginTransaction();
+        MusicModel dbMusic = realm.where(MusicModel.class).equalTo("id", mid).findFirst();
+        dbMusic.deleteFromRealm();
+        realm.commitTransaction();
+    }
+
+    public void deleteAlbum(String aid) {
+        realm.beginTransaction();
+        AlbumModel album = realm.where(AlbumModel.class).equalTo("id", aid).findFirst();
+        album.deleteFromRealm();
+        realm.commitTransaction();
+    }
+
+    public void updateMusicInfo(MusicModel music) {
+        realm.beginTransaction();
+        MusicModel dbMusic = realm.where(MusicModel.class).equalTo("id", music.getId()).findFirst();
+        dbMusic.setAuthor(music.getAuthor());
+        dbMusic.setPath(music.getPath());
+        dbMusic.setName(music.getName());
+        dbMusic.setPoster(music.getPoster());
+        realm.commitTransaction();
+    }
+
+    public void updateAlbumSource(AlbumModel album) {
+        realm.beginTransaction();
+        MusicSourceModel musicSource = realm.where(MusicSourceModel.class).findFirst();
+        RealmList list = musicSource.getSelf();
+        list.add(album);
+        musicSource.setSelf(list);
+        realm.commitTransaction();
+    }
+
+    public void reloadMusicSource() {
+        removeMusicSource();
+        setMusicSource();
     }
 
     // realm数据库发生结构性变化，进行数据迁移

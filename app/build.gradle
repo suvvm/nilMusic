@@ -34,7 +34,7 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.blankj:utilcode:1.28.0'
-    implementation 'com.alibaba:fastjson:1.2.73'
+    implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
