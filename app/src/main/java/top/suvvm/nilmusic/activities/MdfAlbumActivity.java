@@ -1,15 +1,33 @@
 package top.suvvm.nilmusic.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.io.IOException;
+
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.adapters.MdfAlbumListAdapter;
 import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.helps.UserHelp;
+import top.suvvm.nilmusic.http.AlbumClient;
+import top.suvvm.nilmusic.pojo.AlbumModel;
+import top.suvvm.nilmusic.pojo.MusicModel;
 import top.suvvm.nilmusic.pojo.MusicSourceModel;
+import top.suvvm.nilmusic.utils.DataUtils;
+import top.suvvm.nilmusic.utils.UserUtils;
 
 public class MdfAlbumActivity extends BaseActivity {
 
@@ -17,6 +35,7 @@ public class MdfAlbumActivity extends BaseActivity {
     private MdfAlbumListAdapter albumListAdapter;
     private RealmHelp realmHelp;
     private MusicSourceModel musicSourceModel;
+    private ImageView ivAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +64,45 @@ public class MdfAlbumActivity extends BaseActivity {
         albumListAdapter = new MdfAlbumListAdapter(this, recyclerViewAlbumList, musicSourceModel.getSelf());
         recyclerViewAlbumList.setAdapter(albumListAdapter);
 
+    }
+
+    public void onAddAlbumClick (View view) {
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        final View inpView = inflater.inflate(R.layout.input_customize, null);
+        final Context context = this;
+        new AlertDialog.Builder(this).setTitle("请输入专辑信息")
+                .setView(inpView)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //按下确定键后的事件
+                        EditText etName, etPlayNum, etPoster;
+                        etName = inpView.findViewById(R.id.et_name);
+                        etPlayNum = inpView.findViewById(R.id.et_play_num);
+                        etPoster = inpView.findViewById(R.id.et_poster);
+                        String name, poster, playNum;
+                        name = etName.getText().toString();
+                        poster = etPoster.getText().toString();
+                        playNum = etPlayNum.getText().toString();
+                        if ("".equals(name) || "".equals(poster) || "".equals(playNum)) {
+                            return;
+                        }
+                        AlbumModel album = new AlbumModel();
+                        album.setName(name);
+                        album.setPoster(poster);
+                        album.setPlayNum(playNum);
+                        try {
+                            AlbumClient.CreateAlbum(album, Integer.valueOf(UserHelp.getInstance().getId()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        RealmHelp realmHelp = new RealmHelp();
+                        realmHelp.removeMusicSource(context);
+                        realmHelp.setMusicSource();
+                        realmHelp.close();
+                        startActivity(getIntent());
+                    }
+                }).setNegativeButton("取消",null).show();
     }
 
     // 销毁时关闭realm

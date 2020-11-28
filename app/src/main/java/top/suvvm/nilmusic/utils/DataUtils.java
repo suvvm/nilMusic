@@ -115,7 +115,7 @@ public class DataUtils {
                 userAlbumInfo.put("hot", musicResp.getMusicList());
                 break;
             }
-            GetAlbumRespModel respSelf = AlbumClient.GetAllAlbum("10000005");
+            GetAlbumRespModel respSelf = AlbumClient.GetAllAlbum(UserHelp.getInstance().getId());
             for (JSONObject album : respSelf.getAlbumList()) {
                 GetMusicRespModel musicResp = MusicClient.GetMusic(album.getString("id"));
                 album.put("playNum", album.get("play_num"));

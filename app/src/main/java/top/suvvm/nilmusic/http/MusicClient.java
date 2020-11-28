@@ -16,9 +16,9 @@ import top.suvvm.nilmusic.pojo.AlbumModel;
 import top.suvvm.nilmusic.pojo.MusicModel;
 
 public class MusicClient extends HttpClient {
-    public static HttpRespModel CreateMusic (AlbumModel album, MusicModel music) throws IOException {
+    public static HttpRespModel CreateMusic (String aid, MusicModel music) throws IOException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("aid", Integer.valueOf(album.getId()));
+        jsonObject.put("aid", Integer.valueOf(aid));
         jsonObject.put("name", music.getName());
         jsonObject.put("poster",music.getPoster());
         jsonObject.put("path",music.getPath());

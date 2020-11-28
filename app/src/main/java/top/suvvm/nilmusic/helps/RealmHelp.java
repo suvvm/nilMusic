@@ -97,7 +97,7 @@ public class RealmHelp {
     // 用户退出删除数据
 
     // 保存音乐源数据
-    public void setMusicSource(Context context) {
+    public void setMusicSource() {
         // 获取json数据
         // String musicJson = DataUtils.getJsonFromUrl("https://www.suvvm.work/nilMusicData/DataSource.json");
         // String musicJson = DataUtils.getJsonFromAssets(context, "DataSource.json");

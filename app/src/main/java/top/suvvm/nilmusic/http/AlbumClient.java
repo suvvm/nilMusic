@@ -17,7 +17,7 @@ import top.suvvm.nilmusic.pojo.UserModel;
 
 public class AlbumClient extends HttpClient {
 
-    public static HttpRespModel CreateAlbum (UserModel user, AlbumModel album, Integer uid) throws IOException {
+    public static HttpRespModel CreateAlbum (AlbumModel album, Integer uid) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
         jsonObject.put("name", album.getName());

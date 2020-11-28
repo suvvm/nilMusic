@@ -21,15 +21,24 @@
             android:layout_height="22dp"
             android:background="@color/mainColor"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="我的专辑"
             android:textColor="@color/titleColor"
             android:textSize="@dimen/titleSize"
             android:textStyle="bold"
             android:layout_marginLeft="@dimen/marginTabSize"/>
-
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="@dimen/itemPlaySize"
+            android:layout_height="@dimen/itemPlaySize"
+            android:src="@mipmap/add"
+            android:layout_gravity="center_vertical"
+            android:onClick="onAddAlbumClick"
+            android:layout_marginLeft="@dimen/marginSize"/>
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

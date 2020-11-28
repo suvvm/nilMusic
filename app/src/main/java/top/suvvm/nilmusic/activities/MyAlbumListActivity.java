@@ -1,15 +1,27 @@
 package top.suvvm.nilmusic.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.adapters.MdfMusicListAdapter;
 import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.helps.UserHelp;
+import top.suvvm.nilmusic.http.AlbumClient;
+import top.suvvm.nilmusic.http.MusicClient;
 import top.suvvm.nilmusic.pojo.AlbumModel;
+import top.suvvm.nilmusic.pojo.MusicModel;
 
 public class MyAlbumListActivity extends BaseActivity {
     public static final String ALBUM_ID = "albumId";
@@ -46,6 +58,49 @@ public class MyAlbumListActivity extends BaseActivity {
         recyclerViewList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));    // 分割线
         musicListAdapter = new MdfMusicListAdapter(this, null, albumModel.getList());
         recyclerViewList.setAdapter(musicListAdapter);
+    }
+
+    public void onAddMusicClick (View view) {
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        final View inpView = inflater.inflate(R.layout.input_add_music, null);
+        final Context context = this;
+        new AlertDialog.Builder(this).setTitle("请输入音乐信息")
+                .setView(inpView)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //按下确定键后的事件
+                        EditText etName, etPoster, etPath, etAuthor;
+                        etName = inpView.findViewById(R.id.et_name);
+                        etPoster = inpView.findViewById(R.id.et_poster);
+                        etPath = inpView.findViewById(R.id.et_path);
+                        etAuthor = inpView.findViewById(R.id.et_author);
+                        String name, poster, path, author;
+                        name = etName.getText().toString();
+                        poster = etPoster.getText().toString();
+                        path = etPath.getText().toString();
+                        author = etAuthor.getText().toString();
+
+                        if ("".equals(name) || "".equals(poster) || "".equals(path) || "".equals(author) ) {
+                            return;
+                        }
+                        MusicModel music = new MusicModel();
+                        music.setName(name);
+                        music.setPoster(poster);
+                        music.setPath(path);
+                        music.setAuthor(author);
+                        try {
+                            MusicClient.CreateMusic(albumId, music);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        RealmHelp realmHelp = new RealmHelp();
+                        realmHelp.removeMusicSource(context);
+                        realmHelp.setMusicSource();
+                        realmHelp.close();
+                        startActivity(getIntent());
+                    }
+                }).setNegativeButton("取消",null).show();
     }
 
     // 销毁时关闭realm

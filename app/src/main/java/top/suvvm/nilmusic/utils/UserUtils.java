@@ -86,7 +86,10 @@ public class UserUtils {
 
         RealmHelp realmHelp = new RealmHelp();
         // 保存音乐源数据
-        realmHelp.setMusicSource(context);
+        realmHelp.setMusicSource();
+        if (!userExistFromPhone(pnum)) {
+            realmHelp.saveUser(userModel);
+        }
 
         realmHelp.close();
 
@@ -162,7 +165,7 @@ public class UserUtils {
             e.printStackTrace();
             return false;
         }
-//        saveUser(userModel);
+        saveUser(userModel);
         return true;
     }
     // 根据手机号判断用户是否存在
