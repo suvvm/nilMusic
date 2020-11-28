@@ -90,7 +90,7 @@ public class MusicClient extends HttpClient {
 
         final Request request = new Request.Builder()
                 .url(MDF_MUSIC_URL)
-                .post(body)
+                .put(body)
                 .build();
         final Response[] response = new Response[1];
         Thread thread = new Thread(new Runnable() {
@@ -114,15 +114,15 @@ public class MusicClient extends HttpClient {
         return JSON.parseObject(resData, HttpRespModel.class);
     }
 
-    public static HttpRespModel DelMusic (AlbumModel album , MusicModel music) throws IOException {
+    public static HttpRespModel DelMusic (Integer aid , Integer mid) throws IOException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("aid", Integer.valueOf(album.getId()));
-        jsonObject.put("mid", Integer.valueOf(music.getId()));
+        jsonObject.put("aid", aid);
+        jsonObject.put("mid", mid);
         RequestBody body = RequestBody.create(jsonObject.toJSONString(), HTTPJSON);
 
         final Request request = new Request.Builder()
                 .url(DELETE_MUSIC_URL)
-                .post(body)
+                .delete(body)
                 .build();
         final Response[] response = new Response[1];
         Thread thread = new Thread(new Runnable() {

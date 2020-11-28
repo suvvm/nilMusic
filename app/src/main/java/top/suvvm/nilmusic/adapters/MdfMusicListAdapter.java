@@ -1,10 +1,14 @@
 package top.suvvm.nilmusic.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,10 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
 import java.util.List;
 
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.PlayMusicActivity;
+import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.helps.UserHelp;
+import top.suvvm.nilmusic.http.AlbumClient;
+import top.suvvm.nilmusic.http.MusicClient;
+import top.suvvm.nilmusic.pojo.AddMusicRespModel;
 import top.suvvm.nilmusic.pojo.MusicModel;
 
 public class MdfMusicListAdapter extends RecyclerView.Adapter<MdfMusicListAdapter.ViewHolder> {
@@ -26,11 +36,13 @@ public class MdfMusicListAdapter extends RecyclerView.Adapter<MdfMusicListAdapte
     private RecyclerView recyclerView;
     private boolean isRvHeightSet;     // 表示recyclerView高度是否已经设定完毕
     private List<MusicModel> dataSource;
+    private String albumID;
 
-    public MdfMusicListAdapter(Context context, RecyclerView recyclerView, List<MusicModel> dataSource) {
+    public MdfMusicListAdapter(Context context, RecyclerView recyclerView, List<MusicModel> dataSource, String albumID) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.dataSource = dataSource;
+        this.albumID = albumID;
     }
 
     @NonNull
@@ -55,18 +67,63 @@ public class MdfMusicListAdapter extends RecyclerView.Adapter<MdfMusicListAdapte
         holder.ivMdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, PlayMusicActivity.class);
-//                intent.putExtra(PlayMusicActivity.MUSIC_ID, musicModel.getId());
-//                context.startActivity(intent);
+                final LayoutInflater inflater = LayoutInflater.from(context);
+                final View inpView = inflater.inflate(R.layout.input_add_music, null);
+                new AlertDialog.Builder(context).setTitle("请输入修改音乐信息")
+                        .setView(inpView)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //按下确定键后的事件
+                                EditText etName, etPoster, etPath, etAuthor;
+                                etName = inpView.findViewById(R.id.et_name);
+                                etPoster = inpView.findViewById(R.id.et_poster);
+                                etPath = inpView.findViewById(R.id.et_path);
+                                etAuthor = inpView.findViewById(R.id.et_author);
+                                String name, poster, path, author;
+                                name = etName.getText().toString();
+                                poster = etPoster.getText().toString();
+                                path = etPath.getText().toString();
+                                author = etAuthor.getText().toString();
+                                if ("".equals(name) || "".equals(poster) || "".equals(path) || "".equals(author) ) {
+                                    return;
+                                }
+                                MusicModel music = new MusicModel();
+                                music.setName(name);
+                                music.setPoster(poster);
+                                music.setPath(path);
+                                music.setAuthor(author);
+                                music.setId(musicModel.getId());
+                                try {
+                                    MusicClient.MdfMusic(music);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                RealmHelp realmHelpInner = new RealmHelp();
+                                realmHelpInner.updateMusicInfo(music);
+                                realmHelpInner.close();
+                            }
+                        }).setNegativeButton("取消",null).show();
             }
         });
         // 删除
         holder.ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, PlayMusicActivity.class);
-//                intent.putExtra(PlayMusicActivity.MUSIC_ID, musicModel.getId());
-//                context.startActivity(intent);
+                new AlertDialog.Builder(context).setTitle("请确定是否删除目标")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                try {
+                                    MusicClient.DelMusic(Integer.valueOf(albumID), Integer.valueOf(musicModel.getId()));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                RealmHelp realmHelp = new RealmHelp();
+                                realmHelp.deleteMusic(musicModel.getId());
+                                realmHelp.close();
+                            }
+                        }).setNegativeButton("取消",null).show();
             }
         });
     }

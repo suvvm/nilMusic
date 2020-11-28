@@ -127,6 +127,30 @@ public class RealmHelp {
         realm.commitTransaction();
     }
 
+    public void deleteMusic(String mid) {
+        realm.beginTransaction();
+        MusicModel dbMusic = realm.where(MusicModel.class).equalTo("id", mid).findFirst();
+        dbMusic.deleteFromRealm();
+        realm.commitTransaction();
+    }
+
+    public void deleteAlbum(String aid) {
+        realm.beginTransaction();
+        AlbumModel album = realm.where(AlbumModel.class).equalTo("id", aid).findFirst();
+        album.deleteFromRealm();
+        realm.commitTransaction();
+    }
+
+    public void updateMusicInfo(MusicModel music) {
+        realm.beginTransaction();
+        MusicModel dbMusic = realm.where(MusicModel.class).equalTo("id", music.getId()).findFirst();
+        dbMusic.setAuthor(music.getAuthor());
+        dbMusic.setPath(music.getPath());
+        dbMusic.setName(music.getName());
+        dbMusic.setPoster(music.getPoster());
+        realm.commitTransaction();
+    }
+
     public void updateAlbumSource(AlbumModel album) {
         realm.beginTransaction();
         MusicSourceModel musicSource = realm.where(MusicSourceModel.class).findFirst();

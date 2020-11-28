@@ -58,7 +58,7 @@ public class MyAlbumListActivity extends BaseActivity {
         recyclerViewList = findViewById(R.id.rv_list);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));    // 分割线
-        musicListAdapter = new MdfMusicListAdapter(this, null, albumModel.getList());
+        musicListAdapter = new MdfMusicListAdapter(this, null, albumModel.getList(), albumId);
         recyclerViewList.setNestedScrollingEnabled(false);  // 禁止滚动
         recyclerViewList.setAdapter(musicListAdapter);
     }

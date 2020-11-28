@@ -79,14 +79,14 @@ public class AlbumClient extends HttpClient {
         return JSON.parseObject(resData, GetAlbumRespModel.class);
     }
 
-    public static HttpRespModel DelAlbum (UserModel user, AlbumModel album, Integer uid) throws IOException {
+    public static HttpRespModel DelAlbum (Integer aid, Integer uid) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
-        jsonObject.put("aid", Integer.valueOf(album.getId()));
+        jsonObject.put("aid", aid);
         RequestBody body = RequestBody.create(jsonObject.toJSONString(), HTTPJSON);
         final Request request = new Request.Builder()
                 .url(DELETE_ALBUM_URL)
-                .post(body)
+                .delete(body)
                 .build();
         final Response[] response = new Response[1];
         Thread thread = new Thread(new Runnable() {

@@ -1,10 +1,14 @@
 package top.suvvm.nilmusic.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,12 +18,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
 import java.util.List;
 
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.AlbumListActivity;
 import top.suvvm.nilmusic.activities.MyAlbumListActivity;
+import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.helps.UserHelp;
+import top.suvvm.nilmusic.http.AlbumClient;
+import top.suvvm.nilmusic.http.MusicClient;
+import top.suvvm.nilmusic.pojo.AddMusicRespModel;
 import top.suvvm.nilmusic.pojo.AlbumModel;
+import top.suvvm.nilmusic.pojo.HttpRespModel;
+import top.suvvm.nilmusic.pojo.MusicModel;
 
 public class MdfAlbumListAdapter extends RecyclerView.Adapter<MdfAlbumListAdapter.ViewHolder>  {
     private Context context;
@@ -63,12 +75,26 @@ public class MdfAlbumListAdapter extends RecyclerView.Adapter<MdfAlbumListAdapte
             }
         });
         // 为每个专辑删除按钮注册点击事件
-//        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 删除
-//            }
-//        });
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(context).setTitle("请确定是否删除目标")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                try {
+                                   AlbumClient.DelAlbum(Integer.valueOf(albumModel.getId()), Integer.valueOf(UserHelp.getInstance().getId()));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                RealmHelp realmHelp = new RealmHelp();
+                                realmHelp.deleteAlbum(albumModel.getId());
+                                realmHelp.close();
+                            }
+
+                        }).setNegativeButton("取消",null).show();
+            }
+        });
     }
 
     @Override
