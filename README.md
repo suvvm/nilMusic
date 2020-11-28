@@ -33,14 +33,57 @@
 ### 2、客户端设计
 
 - 启动后显示登陆页面，可在登陆页面前往注册，登陆时保存默认专辑信息与个人专辑信息至本地缓存
-- 首页点击专辑可以显示专辑中全部音乐
+
+  ![login_img](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/login.jpg)
+
+  ![register_img](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/register.jpg)
+
+- 首页
+
+  - 点击专辑可以显示专辑中全部音乐
+  - 点击热歌列表中的歌曲可以直接开始播放
+
+  ![main_img](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/main.jpg)
+
 - 点击右上角个人信息按钮可以进入个人信息页面
+
 - 个人信息页面
+
   - 自定义播放按钮可以进入个人专辑管理页面
   - 退出登陆可以退出当前用户并清空realm缓存
+
+  ![me_img](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/me.jpg)
+
 - 个人专辑管理页面
+
   - 点击我的专辑右侧加号可以创建新专辑
   - 点击专辑内容
+
+  ![me_img](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/mdf_album.jpg)
+
+![add_album](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/add_album.jpg)
+
+![del_album](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/del_album.jpg)
+
+- 专辑音乐管理页面
+
+  - 点击音乐管理右侧加号可以在目标专辑新增音乐
+  - 点击音乐右侧删除按钮可以删除音乐
+  - 点击音乐右侧扳手按钮可以修改音乐信息
+
+  ![mdf_music](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/mdf_music.jpg)
+
+  ![add_music](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/add_music.jpg)
+
+  ![del_music](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/del_music.jpg)
+
+- 音乐播放页面
+
+  - 点击中央盘带可以播放/暂停音乐
+
+  ![music_play](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/music_play.jpg)
+
+  ![music_stop](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/music_stop.jpg)
 
 ### 3、服务端设计
 
