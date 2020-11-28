@@ -10,13 +10,14 @@ import java.io.IOException;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import top.suvvm.nilmusic.pojo.AddMusicRespModel;
 import top.suvvm.nilmusic.pojo.GetMusicRespModel;
 import top.suvvm.nilmusic.pojo.HttpRespModel;
 import top.suvvm.nilmusic.pojo.AlbumModel;
 import top.suvvm.nilmusic.pojo.MusicModel;
 
 public class MusicClient extends HttpClient {
-    public static HttpRespModel CreateMusic (String aid, MusicModel music) throws IOException {
+    public static AddMusicRespModel CreateMusic (String aid, MusicModel music) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("aid", Integer.valueOf(aid));
         jsonObject.put("name", music.getName());
@@ -45,8 +46,9 @@ public class MusicClient extends HttpClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Log.println(Log.DEBUG, "CreateMusic", response[0].body().string());
-        return JSON.parseObject(response[0].body().string(), HttpRespModel.class);
+        String resData = response[0].body().string();
+        Log.println(Log.DEBUG, "CreateMusic", resData);
+        return JSON.parseObject(resData, AddMusicRespModel.class);
     }
 
     public static GetMusicRespModel GetMusic (String aid) throws IOException {

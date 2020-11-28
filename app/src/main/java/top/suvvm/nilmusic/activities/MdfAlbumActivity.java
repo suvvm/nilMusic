@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import top.suvvm.nilmusic.helps.RealmHelp;
 import top.suvvm.nilmusic.helps.UserHelp;
 import top.suvvm.nilmusic.http.AlbumClient;
 import top.suvvm.nilmusic.pojo.AlbumModel;
+import top.suvvm.nilmusic.pojo.CreateAlbumRespModel;
 import top.suvvm.nilmusic.pojo.MusicModel;
 import top.suvvm.nilmusic.pojo.MusicSourceModel;
 import top.suvvm.nilmusic.utils.DataUtils;
@@ -61,6 +63,7 @@ public class MdfAlbumActivity extends BaseActivity {
         recyclerViewAlbumList = findViewById(R.id.rv_list);
         recyclerViewAlbumList.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAlbumList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));    // 分割线
+        recyclerViewAlbumList.setNestedScrollingEnabled(false);  // 禁止滚动
         albumListAdapter = new MdfAlbumListAdapter(this, recyclerViewAlbumList, musicSourceModel.getSelf());
         recyclerViewAlbumList.setAdapter(albumListAdapter);
 
@@ -92,17 +95,18 @@ public class MdfAlbumActivity extends BaseActivity {
                         album.setPoster(poster);
                         album.setPlayNum(playNum);
                         try {
-                            AlbumClient.CreateAlbum(album, Integer.valueOf(UserHelp.getInstance().getId()));
+                            CreateAlbumRespModel resp = AlbumClient.CreateAlbum(album, Integer.valueOf(UserHelp.getInstance().getId()));
+                            album.setId(resp.getAid().toString());
                         } catch (IOException e) {
                             e.printStackTrace();
+                            // Log.println(Log.ERROR, "onAddAlbumClick", e.getMessage());
                         }
-                        RealmHelp realmHelp = new RealmHelp();
-                        realmHelp.removeMusicSource(context);
-                        realmHelp.setMusicSource();
-                        realmHelp.close();
-                        startActivity(getIntent());
+                        RealmHelp realmHelpInner = new RealmHelp();
+                        realmHelpInner.updateAlbumSource(album);
+                        realmHelpInner.close();
                     }
                 }).setNegativeButton("取消",null).show();
+        // startActivity(getIntent());
     }
 
     // 销毁时关闭realm

@@ -119,7 +119,7 @@ public class UserUtils {
         }
         // 删除数据源
         RealmHelp realmHelp = new RealmHelp();
-        realmHelp.removeMusicSource(context);
+        realmHelp.removeMusicSource();
         realmHelp.close();
 
         Intent intent = new Intent(context, LoginActivity.class);

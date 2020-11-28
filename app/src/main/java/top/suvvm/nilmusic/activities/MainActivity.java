@@ -68,6 +68,13 @@ public class MainActivity extends BaseActivity {
         // realmHelp.close();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+        initView();
+    }
+
     // 销毁时关闭realm
     @Override
     protected void onDestroy() {

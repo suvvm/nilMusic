@@ -10,6 +10,7 @@ import java.io.IOException;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import top.suvvm.nilmusic.pojo.CreateAlbumRespModel;
 import top.suvvm.nilmusic.pojo.GetAlbumRespModel;
 import top.suvvm.nilmusic.pojo.HttpRespModel;
 import top.suvvm.nilmusic.pojo.AlbumModel;
@@ -17,7 +18,7 @@ import top.suvvm.nilmusic.pojo.UserModel;
 
 public class AlbumClient extends HttpClient {
 
-    public static HttpRespModel CreateAlbum (AlbumModel album, Integer uid) throws IOException {
+    public static CreateAlbumRespModel CreateAlbum (AlbumModel album, Integer uid) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
         jsonObject.put("name", album.getName());
@@ -47,7 +48,7 @@ public class AlbumClient extends HttpClient {
         }
         String resData = response[0].body().string();
         Log.println(Log.DEBUG, "CreateAlbum", resData);
-        return JSON.parseObject(resData, HttpRespModel.class);
+        return JSON.parseObject(resData, CreateAlbumRespModel.class);
     }
 
     public static GetAlbumRespModel GetAllAlbum (String uid) throws IOException {
