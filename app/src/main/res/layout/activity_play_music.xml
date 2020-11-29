@@ -78,19 +78,14 @@
                 android:layout_width="@dimen/itemIconSize"
                 android:layout_height="@dimen/itemIconSize"
                 android:src="@mipmap/pre"
-                android:layout_marginLeft="@dimen/marginSize"/>
-
-            <ImageView
-                android:id="@+id/iv_play_buttom"
-                android:layout_width="@dimen/itemIconSize"
-                android:layout_height="@dimen/itemIconSize"
-                android:src="@mipmap/play"
+                android:onClick="onPreClick"
                 android:layout_marginLeft="@dimen/marginSize"/>
 
             <ImageView
                 android:id="@+id/iv_next"
                 android:layout_width="@dimen/itemIconSize"
                 android:layout_height="@dimen/itemIconSize"
+                android:onClick="onNextClick"
                 android:src="@mipmap/next"
                 android:layout_marginLeft="@dimen/marginSize"/>
         </LinearLayout>

@@ -18,7 +18,6 @@ import java.util.List;
 
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.AlbumListActivity;
-import top.suvvm.nilmusic.activities.PlayMusicActivity;
 import top.suvvm.nilmusic.pojo.AlbumModel;
 
 

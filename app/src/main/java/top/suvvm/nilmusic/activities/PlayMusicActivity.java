@@ -4,6 +4,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.helps.MediaPlayerHelp;
 import top.suvvm.nilmusic.helps.RealmHelp;
+import top.suvvm.nilmusic.pojo.AlbumModel;
 import top.suvvm.nilmusic.pojo.MusicModel;
 import top.suvvm.nilmusic.views.PlayMusicView;
 
@@ -20,10 +21,11 @@ import com.bumptech.glide.request.RequestOptions;
 public class PlayMusicActivity extends BaseActivity {
 
     public static final String MUSIC_ID = "musicId";
+    public static final String ALBUM_ID = "albumId";
     public static final String IS_CUSTOMIZE = "isCustomize";
     public static final String CUSTOMIZE_MODEL = "customizeModel";
 
-    private ImageView bgImageView, ivPre, ivPlayButtom, ivNext;
+    private ImageView bgImageView, ivPre, ivNext;
     private PlayMusicView playMusicView;
     private TextView tvName, tvAuthor;
     private String musicId;
@@ -60,7 +62,6 @@ public class PlayMusicActivity extends BaseActivity {
         // 获取背景图片imageView
         bgImageView = findViewById(R.id.iv_bg);
         ivPre = findViewById(R.id.iv_pre);
-        ivPlayButtom = findViewById(R.id.iv_play_buttom);
         ivNext = findViewById(R.id.iv_next);
         // 获取音乐名TextView
         tvName = findViewById(R.id.tv_name);
@@ -99,6 +100,64 @@ public class PlayMusicActivity extends BaseActivity {
                 playMusicView.seekTo(progress);
             }
         });
+    }
+
+    public void onNextClick(View view) {
+        toNextMusic();
+    }
+
+    public void toNextMusic() {
+        String albumID = getIntent().getStringExtra(ALBUM_ID);
+        if (albumID == null) {
+            return;
+        }
+        AlbumModel album = realmHelp.getAlbum(albumID);
+        String newMusicID = "";
+        for (int i = 0; i < album.getList().size(); i++) {
+            if (album.getList().get(i).getId().equals(musicId)){
+                if (i + 1 < album.getList().size()) {
+                    newMusicID = album.getList().get(i + 1).getId();
+                } else {
+                    newMusicID = album.getList().get(0).getId();
+                }
+                break;
+            }
+        }
+        if ("".equals(newMusicID)) {
+            return;
+        }
+        musicId = newMusicID;
+        musicModel = realmHelp.getMusic(newMusicID);
+        initView();
+    }
+
+    public void onPreClick(View view) {
+       toPreMusic();
+    }
+
+    public void toPreMusic() {
+        String albumID = getIntent().getStringExtra(ALBUM_ID);
+        if (albumID == null) {
+            return;
+        }
+        AlbumModel album = realmHelp.getAlbum(albumID);
+        String newMusicID = "";
+        for (int i = 0; i < album.getList().size(); i++) {
+            if (album.getList().get(i).getId().equals(musicId)){
+                if (i - 1 >= 0) {
+                    newMusicID = album.getList().get(i - 1).getId();
+                } else {
+                    newMusicID = album.getList().get(album.getList().size() - 1).getId();
+                }
+                break;
+            }
+        }
+        if ("".equals(newMusicID)) {
+            return;
+        }
+        musicId = newMusicID;
+        musicModel = realmHelp.getMusic(newMusicID);
+        initView();
     }
 
     // 后退按钮点击事件

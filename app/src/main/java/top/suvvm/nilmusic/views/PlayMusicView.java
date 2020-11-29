@@ -147,4 +147,8 @@ public class PlayMusicView extends FrameLayout {
     public void seekTo(int progress) {
         mediaPlayerHelp.seekTo(progress);
     }
+
+    public void next(String Path) {
+
+    }
 }

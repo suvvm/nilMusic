@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
+import top.suvvm.nilmusic.activities.PlayMusicActivity;
+
 /**
  * @ClassName: MediaPlayerHelp
  * @Description: 单例
@@ -43,7 +45,7 @@ public class MediaPlayerHelp {
     }
 
     // setPath 指定播放音乐地址
-    public void setPath(String path) {
+    public void setPath(final String path) {
 
         // 判断音乐是否正在播放 或是否更换音乐
         if (mediaPlayer.isPlaying() || !path.equals(this.path)) {
@@ -85,6 +87,8 @@ public class MediaPlayerHelp {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 updateSeekbarThread = null;
+                PlayMusicActivity playMusicActivity = (PlayMusicActivity) context;
+                playMusicActivity.toNextMusic();
             }
         });
     }
@@ -134,17 +138,17 @@ public class MediaPlayerHelp {
             while(sbMusic.getProgress()<=sbMusic.getMax()){
                 //设置进度条的进度
                 //得到当前音乐的播放位置
-                int  currentPosition=mediaPlayer.getCurrentPosition();
+                int  currentPosition = mediaPlayer.getCurrentPosition();
                 // Log.i("test","currentPosition"+currentPosition);
                 sbMusic.setProgress(currentPosition);
                 //让进度条每一秒向前移动
                 SystemClock.sleep(1000);
                 if (!mediaPlayer.isPlaying()){
+                    sbMusic.setProgress(0);
                     break;
                 }
             }
         }
     }
-
 
 }

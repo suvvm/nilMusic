@@ -22,15 +22,9 @@ import java.io.IOException;
 import java.util.List;
 
 import top.suvvm.nilmusic.R;
-import top.suvvm.nilmusic.activities.AlbumListActivity;
-import top.suvvm.nilmusic.activities.MdfAlbumActivity;
 import top.suvvm.nilmusic.activities.MyAlbumListActivity;
-import top.suvvm.nilmusic.activities.PlayMusicActivity;
 import top.suvvm.nilmusic.helps.RealmHelp;
-import top.suvvm.nilmusic.helps.UserHelp;
-import top.suvvm.nilmusic.http.AlbumClient;
 import top.suvvm.nilmusic.http.MusicClient;
-import top.suvvm.nilmusic.pojo.AddMusicRespModel;
 import top.suvvm.nilmusic.pojo.MusicModel;
 
 public class MdfMusicListAdapter extends RecyclerView.Adapter<MdfMusicListAdapter.ViewHolder> {
