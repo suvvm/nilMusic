@@ -80,6 +80,9 @@
 - 音乐播放页面
 
   - 点击中央盘带可以播放/暂停音乐
+  - 下方滚动条可以控制播放进度
+  - 下放前进/后退按钮可以在当前专辑中切换上一首/下一首歌曲
+  - 歌曲播放完成后会自动切换至专辑的下一首歌曲
 
   ![music_play](https://raw.githubusercontent.com/suvvm/nilMusic/master/readme_res/music_play.jpg)
 
