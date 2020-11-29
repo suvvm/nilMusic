@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.util.List;
 
 import top.suvvm.nilmusic.R;
+import top.suvvm.nilmusic.activities.AlbumListActivity;
+import top.suvvm.nilmusic.activities.MdfAlbumActivity;
+import top.suvvm.nilmusic.activities.MyAlbumListActivity;
 import top.suvvm.nilmusic.activities.PlayMusicActivity;
 import top.suvvm.nilmusic.helps.RealmHelp;
 import top.suvvm.nilmusic.helps.UserHelp;
@@ -102,6 +105,16 @@ public class MdfMusicListAdapter extends RecyclerView.Adapter<MdfMusicListAdapte
                                 RealmHelp realmHelpInner = new RealmHelp();
                                 realmHelpInner.updateMusicInfo(music);
                                 realmHelpInner.close();
+//                                Intent intent = new Intent(context, MyAlbumListActivity.class);
+//                                intent.putExtra(AlbumListActivity.ALBUM_ID, albumID);
+//                                context.startActivity(intent);
+                                final MyAlbumListActivity activity = (MyAlbumListActivity) context;
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        activity.refresh();
+                                    }
+                                });
                             }
                         }).setNegativeButton("取消",null).show();
             }
@@ -122,6 +135,16 @@ public class MdfMusicListAdapter extends RecyclerView.Adapter<MdfMusicListAdapte
                                 RealmHelp realmHelp = new RealmHelp();
                                 realmHelp.deleteMusic(musicModel.getId());
                                 realmHelp.close();
+//                                Intent intent = new Intent(context, MyAlbumListActivity.class);
+//                                intent.putExtra(AlbumListActivity.ALBUM_ID, albumID);
+//                                context.startActivity(intent);
+                                final MyAlbumListActivity activity = (MyAlbumListActivity) context;
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        activity.refresh();
+                                    }
+                                });
                             }
                         }).setNegativeButton("取消",null).show();
             }

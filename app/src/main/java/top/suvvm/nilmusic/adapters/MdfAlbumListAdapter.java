@@ -23,6 +23,7 @@ import java.util.List;
 
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.AlbumListActivity;
+import top.suvvm.nilmusic.activities.MdfAlbumActivity;
 import top.suvvm.nilmusic.activities.MyAlbumListActivity;
 import top.suvvm.nilmusic.helps.RealmHelp;
 import top.suvvm.nilmusic.helps.UserHelp;
@@ -90,6 +91,15 @@ public class MdfAlbumListAdapter extends RecyclerView.Adapter<MdfAlbumListAdapte
                                 RealmHelp realmHelp = new RealmHelp();
                                 realmHelp.deleteAlbum(albumModel.getId());
                                 realmHelp.close();
+//                                Intent intent = new Intent(context, MdfAlbumActivity.class);
+//                                context.startActivity(intent);
+                                final MdfAlbumActivity activity = (MdfAlbumActivity) context;
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        activity.refresh();
+                                    }
+                                });
                             }
 
                         }).setNegativeButton("取消",null).show();
