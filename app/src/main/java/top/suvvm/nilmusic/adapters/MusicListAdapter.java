@@ -32,11 +32,19 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     private RecyclerView recyclerView;
     private boolean isRvHeightSet;     // 表示recyclerView高度是否已经设定完毕
     private List<MusicModel> dataSource;
+    private String albumID;
 
     public MusicListAdapter(Context context, RecyclerView recyclerView, List<MusicModel> dataSource) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.dataSource = dataSource;
+    }
+
+    public MusicListAdapter(Context context, RecyclerView recyclerView, List<MusicModel> dataSource, String albumID) {
+        this.context = context;
+        this.recyclerView = recyclerView;
+        this.dataSource = dataSource;
+        this.albumID = albumID;
     }
 
     @NonNull
@@ -63,6 +71,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
             public void onClick(View v) {
                 Intent intent = new Intent(context, PlayMusicActivity.class);
                 intent.putExtra(PlayMusicActivity.MUSIC_ID, musicModel.getId());
+                intent.putExtra(PlayMusicActivity.ALBUM_ID, albumID);
                 context.startActivity(intent);
             }
         });

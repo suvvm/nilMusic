@@ -56,5 +56,44 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <SeekBar
+            android:id="@+id/sb_music"
+            android:layout_width="match_parent"
+            android:layout_weight="0.04"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:id="@+id/iv_pre"
+                android:layout_width="@dimen/itemIconSize"
+                android:layout_height="@dimen/itemIconSize"
+                android:src="@mipmap/pre"
+                android:onClick="onPreClick"
+                android:layout_marginLeft="@dimen/marginSize"/>
+
+            <ImageView
+                android:id="@+id/iv_next"
+                android:layout_width="@dimen/itemIconSize"
+                android:layout_height="@dimen/itemIconSize"
+                android:onClick="onNextClick"
+                android:src="@mipmap/next"
+                android:layout_marginLeft="@dimen/marginSize"/>
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
     
 </FrameLayout>

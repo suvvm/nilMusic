@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import com.bumptech.glide.Glide;
 
@@ -122,9 +123,6 @@ public class PlayMusicView extends FrameLayout {
                 }
             });
         }
-
-
-
     }
 
     // 停止播放
@@ -144,5 +142,13 @@ public class PlayMusicView extends FrameLayout {
     // 设置光盘中央音乐封面图片
     public void setMusicIcon(String icon) {
         Glide.with(context).load(icon).into(ivIcon);
+    }
+
+    public void seekTo(int progress) {
+        mediaPlayerHelp.seekTo(progress);
+    }
+
+    public void next(String Path) {
+
     }
 }
