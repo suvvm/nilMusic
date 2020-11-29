@@ -3,6 +3,7 @@ package top.suvvm.nilmusic.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +51,11 @@ public class MyAlbumListActivity extends BaseActivity {
         albumModel = realmHelp.getAlbum(albumId);
     }
 
+    public void refresh() {
+        initData();
+        initView();
+    }
+
     // 初始化View
     private void initView () {
         // 初始化导航栏
@@ -66,7 +72,7 @@ public class MyAlbumListActivity extends BaseActivity {
     public void onAddMusicClick (View view) {
         final LayoutInflater inflater = LayoutInflater.from(this);
         final View inpView = inflater.inflate(R.layout.input_add_music, null);
-        final Context context = this;
+        final MyAlbumListActivity context = this;
         new AlertDialog.Builder(this).setTitle("请输入音乐信息")
                 .setView(inpView)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -104,21 +110,16 @@ public class MyAlbumListActivity extends BaseActivity {
                         RealmHelp realmHelpInner = new RealmHelp();
                         realmHelpInner.updateMusicSource(albumId, music);
                         realmHelpInner.close();
+//                        context.onCreate(null);
+//                        Intent intent = new Intent(context, MyAlbumListActivity.class);
+//                        startActivity(intent);
+                        context.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                context.refresh();
+                            }
+                        });
 
-//                        Thread thread = new Thread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                RealmHelp realmHelpInner = new RealmHelp();
-//                                realmHelpInner.reloadMusicSource();
-//                                realmHelpInner.close();
-//                            }
-//                        });
-//                        thread.start();
-//                        try {
-//                            thread.join();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
                     }
                 }).setNegativeButton("取消",null).show();
         // realmHelp.updateMusicSource();

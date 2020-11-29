@@ -84,9 +84,22 @@ public class UserUtils {
         UserHelp.getInstance().setPhone(pnum);
         UserHelp.getInstance().setId(uid.toString());
 
-        RealmHelp realmHelp = new RealmHelp();
+        final RealmHelp realmHelp = new RealmHelp();
         // 保存音乐源数据
-        realmHelp.setMusicSource();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                RealmHelp realmHelpInner = new RealmHelp();
+                realmHelpInner.setMusicSource();
+                realmHelpInner.close();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (!userExistFromPhone(pnum)) {
             realmHelp.saveUser(userModel);
         }

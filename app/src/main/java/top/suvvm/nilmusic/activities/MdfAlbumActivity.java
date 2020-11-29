@@ -69,10 +69,15 @@ public class MdfAlbumActivity extends BaseActivity {
 
     }
 
+    public void refresh() {
+        initData();
+        initView();
+    }
+
     public void onAddAlbumClick (View view) {
         final LayoutInflater inflater = LayoutInflater.from(this);
         final View inpView = inflater.inflate(R.layout.input_customize, null);
-        final Context context = this;
+        final MdfAlbumActivity context = this;
         new AlertDialog.Builder(this).setTitle("请输入专辑信息")
                 .setView(inpView)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -104,6 +109,15 @@ public class MdfAlbumActivity extends BaseActivity {
                         RealmHelp realmHelpInner = new RealmHelp();
                         realmHelpInner.updateAlbumSource(album);
                         realmHelpInner.close();
+//                        Intent intent = new Intent(context, MdfAlbumActivity.class);
+//                        startActivity(intent);
+                        context.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                context.refresh();
+                            }
+                        });
+
                     }
                 }).setNegativeButton("取消",null).show();
         // startActivity(getIntent());
