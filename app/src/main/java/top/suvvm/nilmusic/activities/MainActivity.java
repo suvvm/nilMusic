@@ -72,7 +72,14 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         initData();
-        initView();
+//        initView();
+        // 获取recyclerViewGrid 初始化专辑列表
+        recyclerViewAlbumList = findViewById(R.id.rv_album_list);
+        recyclerViewAlbumList.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewAlbumList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));    // 分割线
+        recyclerViewAlbumList.setNestedScrollingEnabled(false);  // 禁止滚动
+        albumListAdapter = new AlbumListAdapter(this, recyclerViewAlbumList, musicSourceModel.getSelf());
+        recyclerViewAlbumList.setAdapter(albumListAdapter);
     }
 
     // 销毁时关闭realm
