@@ -15,6 +15,7 @@ import java.util.List;
 
 import top.suvvm.nilmusic.R;
 import top.suvvm.nilmusic.activities.LoginActivity;
+import top.suvvm.nilmusic.helps.MediaPlayerHelp;
 import top.suvvm.nilmusic.helps.RealmHelp;
 import top.suvvm.nilmusic.helps.UserHelp;
 import top.suvvm.nilmusic.http.HttpClient;
@@ -124,6 +125,8 @@ public class UserUtils {
 
     // 退出登录
     public static void logout(Context context) {
+        MediaPlayerHelp mediaPlayerHelp = MediaPlayerHelp.getInstance(context);
+        mediaPlayerHelp.pause();
         // 删除SharePreferences里保存的用户标记
         boolean isRemove = SharedPreferencesUtils.removeUser(context);
         if (!isRemove) {
