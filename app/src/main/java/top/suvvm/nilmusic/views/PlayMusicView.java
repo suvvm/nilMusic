@@ -111,6 +111,7 @@ public class PlayMusicView extends FrameLayout {
         // 判断当前音乐是否已经播放
         if (path.equals(mediaPlayerHelp.getPath())) {
             // 如果当前音乐已经在播放，直接执行start继续播放当前音乐
+
             mediaPlayerHelp.start();
         } else {
             // 如果当前播放的音乐并未播放，调用setPath设置mediaPlay状态
