@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.util.Log;
 import android.widget.SeekBar;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +29,10 @@ public class MediaPlayerHelp {
     private String path;
     public static SeekBar sbMusic;
     private UpdateSeekbarThread updateSeekbarThread;
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public void setOnMeidaPlayerHelperListener(OnMeidaPlayerHelperListener onMeidaPlayerHelperListener) {
         this.onMeidaPlayerHelperListener = onMeidaPlayerHelperListener;
@@ -86,7 +91,8 @@ public class MediaPlayerHelp {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                updateSeekbarThread = null;
+                // updateSeekbarThread.exit = true;
+                // updateSeekbarThread = null;
                 PlayMusicActivity playMusicActivity = (PlayMusicActivity) context;
                 playMusicActivity.toNextMusic();
             }
@@ -99,8 +105,15 @@ public class MediaPlayerHelp {
 
     // start 播放音乐
     public void start () {
-        if (mediaPlayer.isPlaying())
+        int lengthOfTime = mediaPlayer.getDuration();
+        sbMusic.setMax(lengthOfTime);
+        int  currentPosition = mediaPlayer.getCurrentPosition();
+        sbMusic.setProgress(currentPosition);
+        if (mediaPlayer.isPlaying()) {
+            // updateSeekbarThread = new UpdateSeekbarThread();
+            // updateSeekbarThread.start();
             return;
+        }
         mediaPlayer.start();
         updateSeekbarThread = new UpdateSeekbarThread();
         updateSeekbarThread.start();
@@ -110,11 +123,17 @@ public class MediaPlayerHelp {
         if (!mediaPlayer.isPlaying())
             return;
         mediaPlayer.pause();
+        // updateSeekbarThread.exit = true;
         updateSeekbarThread = null;
     }
 
     public void seekTo(int progress) {
         mediaPlayer.seekTo(progress);
+    }
+
+    public void clearUpdateSeekbarThread() {
+        // updateSeekbarThread.exit = true;
+        updateSeekbarThread = null;
     }
 
     // 加锁的访问该实例的方法
@@ -128,6 +147,7 @@ public class MediaPlayerHelp {
                 }
             }
         }
+        instance.setContext(context);
         return instance;
     }
 
@@ -140,11 +160,12 @@ public class MediaPlayerHelp {
                 //得到当前音乐的播放位置
                 int  currentPosition = mediaPlayer.getCurrentPosition();
                 // Log.i("test","currentPosition"+currentPosition);
+                // Log.println(Log.INFO, "seekbar", Integer.toString(currentPosition));
                 sbMusic.setProgress(currentPosition);
                 //让进度条每一秒向前移动
                 SystemClock.sleep(1000);
                 if (!mediaPlayer.isPlaying()){
-                    sbMusic.setProgress(0);
+                    // sbMusic.setProgress(0);
                     break;
                 }
             }
